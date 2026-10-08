@@ -1,0 +1,19 @@
+@import url("../styling/Main.css");
+
+.nav-link{
+    color: black !important;
+}
+
+.nav-link:hover{
+    color: var(--blue) !important;
+    text-decoration: underline;
+}
+
+.nav-bar{
+    background-color: white;
+}
+
+.nav-logo-image:hover{
+    cursor: pointer;
+}
+
