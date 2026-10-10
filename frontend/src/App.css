@@ -35,3 +35,24 @@
   object-fit: cover;
   border-radius: 18px;
 }
+
+#more-info-image {
+    /* Combined using the 'background' shorthand */
+    background: url("./assets/clawOldLogo.png") no-repeat center / cover;
+    
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+}
+
+
+
+a:hover{
+    color: var(--blue) !important;
+    text-decoration: underline;
+}
+
+a{
+    text-decoration: none !important;
+}
+

@@ -48,7 +48,6 @@
 
 
 .button-primary, .button-secondary{
-  width: 75%;
   font-size: var(--fs-16px) !important;
   border: 3px, solid, var(--blue) !important;
   border-radius: 18px !important;
@@ -72,4 +71,8 @@
 .button-secondary:hover{
   background-color: var(--blue) !important;
   color: white !important;
+}
+
+#footer{
+  background-color: var(--green);
 }

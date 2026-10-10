@@ -1,14 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import NavBar from "./components/NavBar";
 import DogCard from "./components/DogCard";
+import Footer from "./components/Footer";
 
 import "./App.css";
 import "./styling/Main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import AnimalGallery from "./pages/AnimalGallery";
+import geoIcon from "./assets/geoIcon.png";
+import emailIcon from "./assets/emailIcon.png";
+import globalIcon from "./assets/globalIcon.png";
 
 const Home = () => {
   return (
@@ -65,10 +70,12 @@ const Home = () => {
             </Row>
             <Row className="mt-5">
               <Col className="p-0 d-flex justify-content-start">
-                <Button className="button-primary p-4">View More</Button>
+                <Button className="button-primary p-4 w-75">View More</Button>
               </Col>
               <Col className="p-0 d-flex justify-content-end">
-                <Button className="button-secondary p-4">Donate Now</Button>
+                <Button className="button-secondary p-4 w-75">
+                  Donate Now
+                </Button>
               </Col>
             </Row>
           </Col>
@@ -198,7 +205,7 @@ const Home = () => {
           </Row>
         </Container>
 
-        <Container fluid className="pt-3">
+        <Container fluid className="pt-2 pb-5">
           <Row
             className="my-5 var-font d-flex flex-column align-items-center text-center "
             style={{
@@ -212,12 +219,213 @@ const Home = () => {
           </Row>
           <Row className=" px-5">
             <Col>
-            <div id="virtual-adoption-image">
-            </div>
+              <div id="virtual-adoption-image"></div>
             </Col>
-            <Col></Col>
+            <Col className="ms-5">
+              <Row
+                className="my-4 var-font d-flex flex-column align-items-start"
+                style={{
+                  "--font": "var(--inter)",
+                  "--font-size": "var(--fs-24px)",
+                  "--font-weight": "700",
+                }}
+              >
+                You don’t have to take them home to give them one.
+              </Row>
+              <Row
+                className="my-5 var-font d-flex flex-column align-items-start"
+                style={{
+                  "--font": "var(--inter)",
+                  "--font-size": "var(--fs-16px)",
+                  "--font-weight": "400",
+                }}
+              >
+                Meet the dogs currently in CLAW’s care. Choose a dog whose story
+                speaks to you and become part of their journey by supporting
+                their care through virtual adoption.
+              </Row>
+              <Row className="py-3 col-6 d-flex justify-content-start">
+                <Button className="button-primary p-4 w-50">Learn More</Button>
+              </Row>
+            </Col>
           </Row>
         </Container>
+
+        <Container fluid className="pt-5 pb-3 px-5">
+          <Row className="d-flex justify-content-between">
+            <Col className="col-3">
+              <Row id="more-info-image"></Row>
+              <Row
+                className="mt-3 var-font d-flex flex-column align-items-start"
+                style={{
+                  "--font": "var(--open-sans)",
+                  "--font-size": "var(--fs-16px)",
+                  "--font-weight": "400",
+                }}
+              >
+                We are dedicated to rescuing, rehabilitating and re-homing
+                animals in need. Thank you for supporting our mission.
+              </Row>
+            </Col>
+
+            <Col className="col-3">
+              <Row
+                className="var-font d-flex justify-content-center"
+                style={{
+                  "--font": "var(--inter)",
+                  "--font-size": "var(--fs-16px)",
+                  "--font-weight": "700",
+                }}
+              >
+                Support
+              </Row>
+              <Row>
+                <Col className="mt-2 d-flex align-items-center">
+                  <a href="https://clawsa.wixsite.com/claw/projects"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    Projects
+                  </a>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 d-flex align-items-center">
+                  <a href="https://clawsa.wixsite.com/claw/adopt"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    Regular Adoption
+                  </a>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 d-flex align-items-center">
+                  <a href="https://ee6feaac-1891-4a07-9689-3ecec25ab214.filesusr.com/ugd/c293f2_23c7e923de0a4da98a9fd8a050142af2.pdf"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    Volunteer
+                  </a>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 d-flex align-items-center">
+                  <a href="https://clawsa.wixsite.com/claw/donate"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    Donate Now
+                  </a>
+                </Col>
+              </Row>
+
+            </Col>
+
+            <Col className="col-4">
+              <Row
+                className="var-font d-flex justify-content-center"
+                style={{
+                  "--font": "var(--inter)",
+                  "--font-size": "var(--fs-16px)",
+                  "--font-weight": "700",
+                }}
+              >
+                Contact Us
+              </Row>
+              <Row className="d-flex ">
+                <Col className="col-1 me-2 d-flex align-items-center">
+                  <img
+                    src={geoIcon}
+                    className="icons"
+                    style={{ height: "50%" }}
+                  ></img>
+                </Col>
+                <Col className="d-flex align-items-center">
+                  <div
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                    }}
+                  >
+                    Un-named Rd, Durban Deep, Roodepoort 237-Iq, Johannesburg,
+                    1724
+                  </div>
+                </Col>
+              </Row>
+
+              <Row className="d-flex ">
+                <Col className="col-1 me-2 d-flex align-items-center">
+                  <img
+                    src={emailIcon}
+                    className="icons"
+                    style={{ height: "50%" }}
+                  ></img>
+                </Col>
+                <Col className="d-flex align-items-center">
+                  <a href="mailto:CLAWsouthafrica@gmail.com"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    CLAWsouthafrica@gmail.com
+                  </a>
+                </Col>
+              </Row>
+
+              <Row className="d-flex ">
+                <Col className="col-1 me-2 d-flex align-items-center">
+                  <img
+                    src={globalIcon}
+                    className="icons"
+                    style={{ height: "50%" }}
+                  ></img>
+                </Col>
+                <Col className="d-flex align-items-center">
+                  <a href="clawsa.wixsite.com/claw"
+                    className="var-font "
+                    style={{
+                      "--font": "var(--inter)",
+                      "--font-size": "var(--fs-16px)",
+                      "--font-weight": "400",
+                      "color": "black",
+                    }}
+                  >
+                    clawsa.wixsite.com/claw
+                  </a>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+
+        <Footer />
       </section>
     </>
   );
