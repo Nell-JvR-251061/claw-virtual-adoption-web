@@ -1,16 +1,201 @@
 import { useState } from "react";
-import { Nav } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthManager";
+
+import { Container, Row, Col, Button, Form, Modal, Nav } from "react-bootstrap";
+
+import clawLogo from "../assets/clawLogo.png";
+import profileIcon from "../assets/profileIcon.png";
+import SquaresIcon from "../assets/squaresIcon.svg?react";
+import DogLogIcon from "../assets/dogLogIcon.svg?react";
+import HandAndPawIcon from "../assets/handAndPawIcon.svg?react";
+import BufferIcon from "../assets/bufferIcon.svg?react";
+import GearIcon from "../assets/gearIcon.svg?react";
+import ExitIcon from "../assets/exitIcon.svg?react";
+
+import AnimalAddFrom from "../components/Dashboard/AnimalAddForm";
+
+import "../styling/Dashboard.css";
 
 function Dashboard() {
-  const [show, setShow] = useState(true);
+  const { user } = useAuth();
+  const { Logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const LoggingOut = () => {
+    Logout();
+    navigate("/");
+  };
+
+  const MenuSelect = Object.freeze({
+    Dashboard: "Overview",
+    Gallery: "Animal Gallery",
+    Adoption: "New Virtual Adoptions",
+    Pending: "Pending Adoptees",
+    Settings: "Settings",
+    Form: "Adding New Animal",
+  });
+
+  const now = new Date();
+  const dateAndTime = now.toLocaleString().replaceAll(",", " | ");
+
+  const [selection, setSelection] = useState(MenuSelect.Dashboard);
+
+  const DashboardComponent = () => <div>Dashboard / Overview Content</div>;
+  const GalleryComponent = () => <div>Animal Gallery Content</div>;
+  const AdoptionComponent = () => <div>New Virtual Adoptions View</div>;
+  const PendingComponent = () => <div>Pending Adoptees Management</div>;
+  const SettingsComponent = () => <div>Settings View</div>;
+  const FormComponent = () => <div>Add New Animal Form</div>;
+
+  const renderView = {
+    [MenuSelect.Dashboard]: <DashboardComponent />,
+    [MenuSelect.Gallery]: <GalleryComponent />,
+    [MenuSelect.Adoption]: <AdoptionComponent />,
+    [MenuSelect.Pending]: <PendingComponent />,
+    [MenuSelect.Settings]: <SettingsComponent />,
+    [MenuSelect.Form]: <AnimalAddFrom />,
+  };
 
   return (
     <>
-      <Nav className="flex-column">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#dashboard">Dashboard</Nav.Link>
-        <Nav.Link href="#settings">Settings</Nav.Link>
-      </Nav>
+      <Container fluid>
+        <Row>
+          <Col
+            id="menu-container"
+            className="col-2 px-4 pt-4 pb-5 d-flex flex-column justify-content-star align-items-center vh-100"
+          >
+            <img id="claw-logo-dashboard" src={clawLogo} className="w-75"></img>
+            <Nav className="flex-column mt-5 gap-3 w-100">
+              <Nav.Link
+                className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Dashboard ? "active justify-content-center w-100 mx-auto" : ""}`}
+                onClick={() => setSelection(MenuSelect.Dashboard)}
+              >
+                <Col xs="auto" className="me-3">
+                  <SquaresIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Dashboard
+                </Col>
+              </Nav.Link>
+
+              <Nav.Link
+                className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Gallery ? "active justify-content-center w-100 mx-auto" : ""}`}
+                onClick={() => setSelection(MenuSelect.Gallery)}
+              >
+                <Col xs="auto" className="me-3">
+                  <DogLogIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Animal Gallery
+                </Col>
+              </Nav.Link>
+
+              <Nav.Link
+                className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Adoption ? "active justify-content-center w-100 mx-auto" : ""}`}
+                onClick={() => setSelection(MenuSelect.Adoption)}
+              >
+                <Col xs="auto" className="me-3">
+                  <HandAndPawIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Virtual Adoptions
+                </Col>
+              </Nav.Link>
+
+              <Nav.Link
+                className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Pending ? "active justify-content-center w-100 mx-auto" : ""}`}
+                onClick={() => setSelection(MenuSelect.Pending)}
+              >
+                <Col xs="auto" className="me-3">
+                  <BufferIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Pending Adoptions
+                </Col>
+              </Nav.Link>
+
+              <Nav.Link
+                className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Settings ? "active justify-content-center w-100 mx-auto" : ""}`}
+                onClick={() => setSelection(MenuSelect.Settings)}
+              >
+                <Col xs="auto" className="me-3">
+                  <GearIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Settings
+                </Col>
+              </Nav.Link>
+            </Nav>
+
+            <Nav className="flex-column mt-auto w-100">
+              <Nav.Link
+                id="logout-link"
+                className="py-3 d-flex flex-row align-items-center menu-option"
+                onClick={LoggingOut}
+              >
+                <Col xs="auto" className="me-3">
+                  <ExitIcon className="dashboard-icons" />
+                </Col>
+                <Col xs="auto" className="menu-text">
+                  Log Out
+                </Col>
+              </Nav.Link>
+            </Nav>
+          </Col>
+
+          <Col id="content-container" className="px-5">
+            <Row id="dashboard-header" className="mt-4 align-items-center">
+              <Col>
+                <Row
+                  className="var-font"
+                  style={{
+                    "--font": "var(--inter)",
+                    "--font-size": "var(--fs-24px)",
+                    "--font-weight": "700",
+                  }}
+                >
+                  <div>
+                    <span
+                      style={{
+                        color: "var(--blue)",
+                      }}
+                    >
+                      Welcome {user.name} {user.surname}
+                    </span>
+                    {" - "}
+                    {selection}
+                  </div>
+                </Row>
+                <Row
+                  className="ps-3 var-font"
+                  style={{
+                    "--font": "var(--inter)",
+                    "--font-size": "16px",
+                    "--font-weight": "400",
+                  }}
+                >
+                  {dateAndTime}
+                </Row>
+              </Col>
+              <Col className="col-3 d-flex flex-column align-items-end">
+                <Button
+                  id="add-animal-button"
+                  className="button-primary"
+                  onClick={() => setSelection(MenuSelect.Form)}
+                >
+                  Add New Animal
+                </Button>
+              </Col>
+            </Row>
+
+            <Row className="mt-4">
+                {renderView[selection] || <DashboardComponent />}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
