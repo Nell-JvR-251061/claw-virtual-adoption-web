@@ -5,12 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NavBar from "./components/NavBar";
 import DogCard from "./components/DogCard";
 import Footer from "./components/Footer";
+import { AuthProvider, useAuth } from "./components/AuthManager";
 
 import "./App.css";
 import "./styling/Main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import AnimalGallery from "./pages/AnimalGallery";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+
 import geoIcon from "./assets/geoIcon.png";
 import emailIcon from "./assets/emailIcon.png";
 import globalIcon from "./assets/globalIcon.png";
@@ -70,12 +74,10 @@ const Home = () => {
             </Row>
             <Row className="mt-5">
               <Col className="p-0 d-flex justify-content-start">
-                <Button className="button-primary p-4 w-75">View More</Button>
+                <Button className="button-primary">View More</Button>
               </Col>
               <Col className="p-0 d-flex justify-content-end">
-                <Button className="button-secondary p-4 w-75">
-                  Donate Now
-                </Button>
+                <Button className="button-secondary">Donate Now</Button>
               </Col>
             </Row>
           </Col>
@@ -201,7 +203,7 @@ const Home = () => {
             </div>
           </Row>
           <Row className="my-5 col-3 mx-auto d-flex justify-content-center">
-            <Button className="button-primary p-4 w-50">View More</Button>
+            <Button className="button-primary w-50">View More</Button>
           </Row>
         </Container>
 
@@ -245,7 +247,7 @@ const Home = () => {
                 their care through virtual adoption.
               </Row>
               <Row className="py-3 col-6 d-flex justify-content-start">
-                <Button className="button-primary p-4 w-50">Learn More</Button>
+                <Button className="button-primary w-50">Learn More</Button>
               </Row>
             </Col>
           </Row>
@@ -280,14 +282,15 @@ const Home = () => {
                 Support
               </Row>
               <Row>
-                <Col className="mt-2 d-flex align-items-center">
-                  <a href="https://clawsa.wixsite.com/claw/projects"
+                <Col className="mt-3 d-flex align-items-center">
+                  <a
+                    href="https://clawsa.wixsite.com/claw/projects"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
                     Projects
@@ -296,28 +299,30 @@ const Home = () => {
               </Row>
               <Row>
                 <Col className="mt-3 d-flex align-items-center">
-                  <a href="https://clawsa.wixsite.com/claw/adopt"
+                  <a
+                    href="https://clawsa.wixsite.com/claw/adopt"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
-                    Regular Adoption
+                    Offline Adoption
                   </a>
                 </Col>
               </Row>
               <Row>
                 <Col className="mt-3 d-flex align-items-center">
-                  <a href="https://ee6feaac-1891-4a07-9689-3ecec25ab214.filesusr.com/ugd/c293f2_23c7e923de0a4da98a9fd8a050142af2.pdf"
+                  <a
+                    href="https://ee6feaac-1891-4a07-9689-3ecec25ab214.filesusr.com/ugd/c293f2_23c7e923de0a4da98a9fd8a050142af2.pdf"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
                     Volunteer
@@ -326,20 +331,20 @@ const Home = () => {
               </Row>
               <Row>
                 <Col className="mt-3 d-flex align-items-center">
-                  <a href="https://clawsa.wixsite.com/claw/donate"
+                  <a
+                    href="https://clawsa.wixsite.com/claw/donate"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
                     Donate Now
                   </a>
                 </Col>
               </Row>
-
             </Col>
 
             <Col className="col-4">
@@ -353,7 +358,7 @@ const Home = () => {
               >
                 Contact Us
               </Row>
-              <Row className="d-flex ">
+              <Row className="mt-2 d-flex ">
                 <Col className="col-1 me-2 d-flex align-items-center">
                   <img
                     src={geoIcon}
@@ -385,13 +390,14 @@ const Home = () => {
                   ></img>
                 </Col>
                 <Col className="d-flex align-items-center">
-                  <a href="mailto:CLAWsouthafrica@gmail.com"
+                  <a
+                    href="mailto:clawsouthafrica@gmail.com"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
                     CLAWsouthafrica@gmail.com
@@ -408,16 +414,17 @@ const Home = () => {
                   ></img>
                 </Col>
                 <Col className="d-flex align-items-center">
-                  <a href="clawsa.wixsite.com/claw"
+                  <a
+                    href="https://clawsa.wixsite.com/claw"
                     className="var-font "
                     style={{
                       "--font": "var(--inter)",
                       "--font-size": "var(--fs-16px)",
                       "--font-weight": "400",
-                      "color": "black",
+                      color: "black",
                     }}
                   >
-                    clawsa.wixsite.com/claw
+                    clawsa.com
                   </a>
                 </Col>
               </Row>
@@ -433,14 +440,16 @@ const Home = () => {
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Animal Gallery" element={<AnimalGallery />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/Animal Gallery" element={<AnimalGallery />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
   );
 }
 

@@ -1,21 +1,32 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthManager";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
 import "../styling/NavBar.css";
 import clawLogo from "../assets/clawLogo.png";
 
 function NavBar() {
+  const { user } = useAuth();
+  const { Logout } = useAuth();
+
   const navigate = useNavigate();
 
+  const LoggingOut = () => {
+    Logout();
+    navigate("/");
+  };
 
   return (
     <Navbar expand="lg" className="nav-bar">
       <Container>
-        <Navbar.Brand onClick={() => {navigate("/");}}>
+        <Navbar.Brand
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <img
             alt="Claw Logo"
             src={clawLogo}
@@ -27,11 +38,52 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav
-            className="w-100 justify-content-around var-font" style={{ "--font": "var(--inter)", "--font-size": "var(--fs-16px)", "--font-weight": "550"}} >
-            <Nav.Link onClick={() => {navigate("/");}}>Home</Nav.Link>
-            <Nav.Link onClick={() => {navigate("/Animal Gallery");}}>Animal Gallery</Nav.Link>
+            className=" justify-content-evenly var-font"
+            style={{
+              "--font": "var(--inter)",
+              "--font-size": "var(--fs-16px)",
+              "--font-weight": "550",
+              "width": "90%"
+            }}
+          >
+            <Nav.Link
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/Animal Gallery");
+              }}
+            >
+              Animal Gallery
+            </Nav.Link>
             <Nav.Link href="#link">Virtual Adoption</Nav.Link>
             <Nav.Link href="#link">Donations</Nav.Link>
+          </Nav>
+          <Nav
+            className="var-font"
+            style={{
+              "--font": "var(--inter)",
+              "--font-size": "var(--fs-16px)",
+              "--font-weight": "550",
+            }}
+          >
+            {!user ? (<Nav.Link
+              id="login-link"
+              onClick={() => {
+                navigate("/Login");
+              }}
+            >
+              Login
+            </Nav.Link>) : (<Nav.Link
+              id="logout-link"
+              onClick={LoggingOut}
+            >
+              Log Out
+            </Nav.Link>)}
           </Nav>
         </Navbar.Collapse>
       </Container>

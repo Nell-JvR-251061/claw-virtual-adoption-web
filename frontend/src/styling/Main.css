@@ -48,6 +48,8 @@
 
 
 .button-primary, .button-secondary{
+  width: 75%;
+  padding: 16px 0 !important;
   font-size: var(--fs-16px) !important;
   border: 3px, solid, var(--blue) !important;
   border-radius: 18px !important;
@@ -75,4 +77,44 @@
 
 #footer{
   background-color: var(--green);
+}
+
+.modal-body, .modal-header, .modal-footer{
+  border: none !important;
+}
+
+.modal-content{
+  border: 2px solid var(--blue);
+}
+
+.modal-header{
+  font-family:var(--open-sans) !important;
+  font-style: normal;
+  color: var(--blue);
+}
+
+#modal-error .modal-content{
+  border: 2px solid red;
+}
+
+#modal-error .modal-header{
+  font-family:var(--open-sans) !important;
+  font-style: normal;
+  color: red;
+}
+
+.modal-body{
+  font-family: var(--inter) !important;
+  color: var(--grey);
+}
+
+.modal-footer button{
+  background-color: var(--blue);
+  border: 2px solid var(--blue);
+}
+
+.modal-footer button:hover{
+  background-color: white;
+  color: var(--blue);
+  border: 2px solid var(--blue);
 }
