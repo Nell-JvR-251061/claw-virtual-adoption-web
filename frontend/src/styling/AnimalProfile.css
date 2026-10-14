@@ -1,0 +1,8 @@
+@import url("../styling/Main.css");
+
+#animal-profile-image {
+  width: 100%;
+  border-radius: 18px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}

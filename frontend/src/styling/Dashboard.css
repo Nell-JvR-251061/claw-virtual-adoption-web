@@ -4,7 +4,7 @@
   background-color: var(--blue);
   box-shadow: 6px 0px 10px rgba(0, 0, 0, 0.75);
   overflow: visible;
-  position: relative;
+  position: fixed;
   z-index: 5;
 }
 
@@ -69,3 +69,4 @@
 #add-animal-button{
   padding: 24px 0px !important;
 }
+

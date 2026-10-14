@@ -1,9 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import NavBar from "./components/NavBar";
-import DogCard from "./components/DogCard";
+import AnimalCard from "./components/AnimalCard";
 import Footer from "./components/Footer";
 import { AuthProvider, useAuth } from "./components/AuthManager";
 
@@ -11,9 +10,11 @@ import "./App.css";
 import "./styling/Main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import AnimalGallery from "./pages/AnimalGallery";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import AnimalGallery from "./pages/AnimalGallery";
+import VirtualAdoption from "./pages/VirtualAdoption";
+import AnimalProfile from "./pages/AnimalProfile";
 
 import geoIcon from "./assets/geoIcon.png";
 import emailIcon from "./assets/emailIcon.png";
@@ -40,7 +41,7 @@ const Home = () => {
                   color: "var(--blue)",
                 }}
               >
-                Welcome To Claw
+                Welcome to Claw
               </Col>
               <Col xs="auto">
                 <div className="claw-icon-image"></div>
@@ -54,7 +55,7 @@ const Home = () => {
                 "--font-weight": "700",
               }}
             >
-              Changing Lives One paw at a Time
+              Changing Lives One Paw at a Time
             </Row>
             <Row
               className="p-0 mt-3 mb-5 var-font"
@@ -159,7 +160,7 @@ const Home = () => {
               color: "var(--blue)",
             }}
           >
-            Animals Up For Adoptions
+            Animals Up for Adoptions
           </Row>
           <Row>
             <div
@@ -170,9 +171,9 @@ const Home = () => {
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="d-flex flex-row justify-content-around">
-                    <DogCard />
-                    <DogCard />
-                    <DogCard />
+                    {/* <AnimalCard />
+                    <AnimalCard />
+                    <AnimalCard /> */}
                   </div>
                 </div>
               </div>
@@ -242,9 +243,7 @@ const Home = () => {
                   "--font-weight": "400",
                 }}
               >
-                Meet the dogs currently in CLAW’s care. Choose a dog whose story
-                speaks to you and become part of their journey by supporting
-                their care through virtual adoption.
+                Learn more about what Virtual Adoption means for you and the dog you choose to support. And how that support assists us to keep looking after our furry friends.
               </Row>
               <Row className="py-3 col-6 d-flex justify-content-start">
                 <Button className="button-primary w-50">Learn More</Button>
@@ -440,16 +439,18 @@ const Home = () => {
 
 function App() {
   return (
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Animal Gallery" element={<AnimalGallery />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/AnimalGallery" element={<AnimalGallery />} />
+          <Route path="/AnimalProfile" element={<AnimalProfile />} />
+          <Route path="/VirtualAdoption" element={<VirtualAdoption />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

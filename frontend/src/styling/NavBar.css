@@ -1,7 +1,7 @@
 @import url("../styling/Main.css");
 
 .nav-link {
-  color: black !important;
+  color: black;
 }
 
 .nav-link:hover {

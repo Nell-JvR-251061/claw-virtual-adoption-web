@@ -6,20 +6,22 @@ const Dog = require("../models/dog");
 //Register a new dog
 router.post('/register', async (req, res) => {
     try {
-        const { name, gender, age, breed, size, personality, energy, goodWith, badWith, location, adoptionAvailability, about } = req.body;
+        const { name, gender, age, breed, size, personality, energy, goodWith, badWith, location, adoptionAvailability, about, image } = req.body;
 
         const newDog = new Dog({
             name,
             gender,
-            age, breed,
-            size,
+            age, 
+            breed,
             personality,
+            size,
             energy,
             goodWith,
             badWith,
             location,
             adoptionAvailability,
-            about
+            about,
+            image,
         });
 
         const saved = await newDog.save();
@@ -31,8 +33,18 @@ router.post('/register', async (req, res) => {
     }
 });
 
+//Get all dogs' information
+router.get('/', async (req, res) => {
+  try {
+    const dogs = await Dog.find({});
+    res.status(200).json(dogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //Get the information of selected dog
-router.get("get/:id", async (req, res) => {
+router.get("/get/:id", async (req, res) => {
   try {
     const dogToGet = await Dog.findById(req.params.id);
 
@@ -47,7 +59,7 @@ router.get("get/:id", async (req, res) => {
 });
 
 //Update a selected dog's details
-router.put("update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const dogToBeUpdated = await Dog.findByIdAndUpdate(
       req.params.id,
@@ -69,7 +81,7 @@ router.put("update/:id", async (req, res) => {
 });
 
 //Delete a selected dog
-router.delete("delete/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const dogToBeDeleted = await Dog.findByIdAndDelete(req.params.id);
 

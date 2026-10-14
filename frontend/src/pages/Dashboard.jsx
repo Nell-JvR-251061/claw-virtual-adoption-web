@@ -42,12 +42,15 @@ function Dashboard() {
 
   const [selection, setSelection] = useState(MenuSelect.Dashboard);
 
+  const selectionChangeExternal = (externalValue) => {
+    setSelection(externalValue);
+  };
+
   const DashboardComponent = () => <div>Dashboard / Overview Content</div>;
   const GalleryComponent = () => <div>Animal Gallery Content</div>;
   const AdoptionComponent = () => <div>New Virtual Adoptions View</div>;
   const PendingComponent = () => <div>Pending Adoptees Management</div>;
   const SettingsComponent = () => <div>Settings View</div>;
-  const FormComponent = () => <div>Add New Animal Form</div>;
 
   const renderView = {
     [MenuSelect.Dashboard]: <DashboardComponent />,
@@ -55,7 +58,7 @@ function Dashboard() {
     [MenuSelect.Adoption]: <AdoptionComponent />,
     [MenuSelect.Pending]: <PendingComponent />,
     [MenuSelect.Settings]: <SettingsComponent />,
-    [MenuSelect.Form]: <AnimalAddFrom />,
+    [MenuSelect.Form]: <AnimalAddFrom onVariableChange={selectionChangeExternal} />,
   };
 
   return (
@@ -64,7 +67,7 @@ function Dashboard() {
         <Row>
           <Col
             id="menu-container"
-            className="col-2 px-4 pt-4 pb-5 d-flex flex-column justify-content-star align-items-center vh-100"
+            className="col-2 px-4 pt-4 pb-5 d-flex flex-column justify-content-start align-items-center vh-100"
           >
             <img id="claw-logo-dashboard" src={clawLogo} className="w-75"></img>
             <Nav className="flex-column mt-5 gap-3 w-100">
@@ -145,7 +148,10 @@ function Dashboard() {
             </Nav>
           </Col>
 
-          <Col id="content-container" className="px-5">
+          <Col
+            id="content-container"
+            className="col-10 offset-2 justify-self-start px-5 vh-100"
+          >
             <Row id="dashboard-header" className="mt-4 align-items-center">
               <Col>
                 <Row
@@ -180,18 +186,22 @@ function Dashboard() {
                 </Row>
               </Col>
               <Col className="col-3 d-flex flex-column align-items-end">
-                <Button
-                  id="add-animal-button"
-                  className="button-primary"
-                  onClick={() => setSelection(MenuSelect.Form)}
-                >
-                  Add New Animal
-                </Button>
+                {selection !== MenuSelect.Form ? (
+                  <Button
+                    id="add-animal-button"
+                    className="button-primary"
+                    onClick={() => setSelection(MenuSelect.Form)}
+                  >
+                    Add an Animal
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </Col>
             </Row>
 
             <Row className="mt-4">
-                {renderView[selection] || <DashboardComponent />}
+              {renderView[selection] || <DashboardComponent />}
             </Row>
           </Col>
         </Row>

@@ -41,6 +41,7 @@ const DogSchema = new mongoose.Schema({
             'Bernese Mountain Dog',
             'Bichon Frise',
             'Bloodhound',
+            'Boerboel',
             'Bolognese',
             'Border Collie',
             'Borzoi',
@@ -169,28 +170,36 @@ const DogSchema = new mongoose.Schema({
         trim: true
     },
 
-    adoptionAvailability: {
-        type: Boolean,
-        default: true,
-    },
-
-    about:{
+    about: {
         type: String,
         required: true,
         trim: true
     },
 
-    adopter:{
+    image: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+
+    adoptionAvailability: {
+        type: Boolean,
+        default: true,
+    },
+
+    adopter: {
         type: String,
         trim: true,
         default: ""
     },
 
-    adopterEmail:{
+    adopterEmail: {
         type: String,
         trim: true,
-        default: ""
-    }
+        default: "",
+        unique: true,
+    },
 },
     { timestamps: true }
 );

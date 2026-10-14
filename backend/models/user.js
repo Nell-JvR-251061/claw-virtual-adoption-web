@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         minLength: [6],
         trim: true
     },
-    adoptedDogs: {
+    adoptedAnimals: {
         type: [String],
         default: [],
     },

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthManager";
 
 import Container from "react-bootstrap/Container";
@@ -13,6 +13,9 @@ function NavBar() {
   const { Logout } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const activePage = location.pathname;
 
   const LoggingOut = () => {
     Logout();
@@ -30,7 +33,7 @@ function NavBar() {
           <img
             alt="Claw Logo"
             src={clawLogo}
-            width="100px"
+            width="120px"
             height="auto"
             className="d-inline-block align-top nav-logo-image"
           />
@@ -43,10 +46,11 @@ function NavBar() {
               "--font": "var(--inter)",
               "--font-size": "var(--fs-16px)",
               "--font-weight": "550",
-              "width": "90%"
+              width: "90%",
             }}
           >
             <Nav.Link
+              style={activePage === "/" ? { color: "var(--blue)" } : {color: "black"}}
               onClick={() => {
                 navigate("/");
               }}
@@ -54,14 +58,35 @@ function NavBar() {
               Home
             </Nav.Link>
             <Nav.Link
+              style={
+                activePage === "/AnimalGallery"
+                  ? { color: "var(--blue)" }
+                  : {color: "black"}
+              }
               onClick={() => {
-                navigate("/Animal Gallery");
+                navigate("/AnimalGallery");
               }}
             >
               Animal Gallery
             </Nav.Link>
-            <Nav.Link href="#link">Virtual Adoption</Nav.Link>
-            <Nav.Link href="#link">Donations</Nav.Link>
+            <Nav.Link
+              style={
+                activePage === "/VirtualAdoption"
+                  ? { color: "var(--blue)" }
+                  : {color: "black" }
+              }
+              onClick={() => {
+                navigate("/VirtualAdoption");
+              }}
+            >
+              Virtual Adoption
+            </Nav.Link>
+            {/* <Nav.Link
+              style={activePage === "/" ? "active-page" : ""}
+              href="#link"
+            >
+              Donations
+            </Nav.Link> */}
           </Nav>
           <Nav
             className="var-font"
@@ -71,19 +96,20 @@ function NavBar() {
               "--font-weight": "550",
             }}
           >
-            {!user ? (<Nav.Link
-              id="login-link"
-              onClick={() => {
-                navigate("/Login");
-              }}
-            >
-              Login
-            </Nav.Link>) : (<Nav.Link
-              id="logout-link"
-              onClick={LoggingOut}
-            >
-              Log Out
-            </Nav.Link>)}
+            {!user ? (
+              <Nav.Link
+                id="login-link"
+                onClick={() => {
+                  navigate("/Login");
+                }}
+              >
+                Login
+              </Nav.Link>
+            ) : (
+              <Nav.Link id="logout-link" onClick={LoggingOut}>
+                Log Out
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
