@@ -13,7 +13,7 @@ import "../styling/Login.css";
 
 function Login() {
   //---------- Server and Navigation References----------
- const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/auth";
+  const API = "http://claw-virtual-adoption-web-production.up.railway.app/api/auth";
   const navigate = useNavigate();
   const { Login } = useAuth();
 

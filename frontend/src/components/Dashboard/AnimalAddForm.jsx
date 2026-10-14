@@ -130,6 +130,7 @@ function AnimalAddFrom({ onVariableChange }) {
       return;
     }
 
+
     try {
       const res = await fetch(API + "/register", {
         method: "POST",
