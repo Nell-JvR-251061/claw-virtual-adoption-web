@@ -1,8 +1,17 @@
 @import url("../styling/Main.css");
 
+#profile-container{
+    padding: 0 8%;
+    background: url("../assets/pawPrintsTurn.jpg") no-repeat center / cover;
+}
+
 #animal-profile-image {
   width: 100%;
   border-radius: 18px;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+
+.profile-quick-info{
+    font-weight: 550;
 }

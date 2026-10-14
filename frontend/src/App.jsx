@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import NavBar from "./components/NavBar";
 import AnimalCard from "./components/AnimalCard";
@@ -21,8 +22,76 @@ import emailIcon from "./assets/emailIcon.png";
 import globalIcon from "./assets/globalIcon.png";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const API = "http://localhost:5000/api/dog";
+
+  const [animals, setAnimals] = useState([]);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
+  const [modalError, setModalError] = useState(false);
+
+  const DisplayModal = (_title, _body, _isError) => {
+    setModalTitle(_title);
+    setModalBody(_body);
+    setModalError(_isError);
+
+    handleShow();
+  };
+
+  useEffect(() => {
+    const getAnimals = async () => {
+      try {
+        const response = await fetch(API);
+        const data = await response.json();
+
+        console.log(data);
+
+        setAnimals(data);
+      } catch (error) {
+        console.error("The backend has ran away...", error);
+      }
+    };
+
+    getAnimals();
+  }, []);
+
+  useEffect(() => {
+    const firstTime = sessionStorage.getItem("firstTime") !== null;
+    if (!firstTime) {
+      DisplayModal(
+        "DISCLAIMER",
+        `This website was built as an academic assignment, as a "Proof of Concept" for the CLAW NGO in partnership with Open Window.\nSome information and/or features might be inaccurate, missing or incomplete.`,
+        true,
+      );
+      sessionStorage.setItem("firstTime", false);
+    }
+  }, []);
+
   return (
     <>
+      <Modal
+        id={modalError ? "modal-error" : undefined}
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title style={{ fontWeight: "700" }}>{modalTitle}</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>{modalBody}</Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleClose}>Okay</Button>
+        </Modal.Footer>
+      </Modal>
+
       <nav>
         <NavBar />
       </nav>
@@ -75,10 +144,17 @@ const Home = () => {
             </Row>
             <Row className="mt-5">
               <Col className="p-0 d-flex justify-content-start">
-                <Button className="button-primary">View More</Button>
+                <Button
+                  className="button-primary"
+                  onClick={() => {
+                    navigate("/AnimalGallery");
+                  }}
+                >
+                  View More
+                </Button>
               </Col>
               <Col className="p-0 d-flex justify-content-end">
-                <Button className="button-secondary">Donate Now</Button>
+                {/* <Button className="button-secondary">Donate Now</Button> */}
               </Col>
             </Row>
           </Col>
@@ -163,48 +239,34 @@ const Home = () => {
             Animals Up for Adoptions
           </Row>
           <Row>
-            <div
-              id="carouselExampleControls"
-              className="carousel slide mb-4"
-              data-bs-ride="carousel"
-            >
-              <div className="carousel-inner">
-                <div className="carousel-item active">
-                  <div className="d-flex flex-row justify-content-around">
-                    {/* <AnimalCard />
-                    <AnimalCard />
-                    <AnimalCard /> */}
-                  </div>
-                </div>
+            <div className="container mb-4">
+              <div className="row justify-content-center g-3">
+                {!animals ? (
+                  <p>Still waiting...</p>
+                ) : animals.length === 0 ? (
+                  <p>No dogs found in the database.</p>
+                ) : (
+                  [...animals]
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)
+                    .map((animal) => (
+                      <div className="col-12 col-md-4" key={animal._id}>
+                        <AnimalCard _animal={animal} />
+                      </div>
+                    ))
+                )}
               </div>
-              <button
-                className="carousel-control-prev"
-                type="button"
-                data-bs-target="#carouselExampleControls"
-                data-bs-slide="prev"
-              >
-                <span
-                  className="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span className="visually-hidden">Previous</span>
-              </button>
-              <button
-                className="carousel-control-next"
-                type="button"
-                data-bs-target="#carouselExampleControls"
-                data-bs-slide="next"
-              >
-                <span
-                  className="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span className="visually-hidden">Next</span>
-              </button>
             </div>
           </Row>
           <Row className="my-5 col-3 mx-auto d-flex justify-content-center">
-            <Button className="button-primary w-50">View More</Button>
+            <Button
+              className="button-primary w-50"
+              onClick={() => {
+                navigate("/AnimalGallery");
+              }}
+            >
+              View More
+            </Button>
           </Row>
         </Container>
 
@@ -243,10 +305,19 @@ const Home = () => {
                   "--font-weight": "400",
                 }}
               >
-                Learn more about what Virtual Adoption means for you and the dog you choose to support. And how that support assists us to keep looking after our furry friends.
+                Learn more about what Virtual Adoption means for you and the dog
+                you choose to support. And how that support assists us to keep
+                looking after our furry friends.
               </Row>
               <Row className="py-3 col-6 d-flex justify-content-start">
-                <Button className="button-primary w-50">Learn More</Button>
+                <Button
+                  className="button-primary w-50"
+                  onClick={() => {
+                    navigate("/VirtualAdoption");
+                  }}
+                >
+                  Learn More
+                </Button>
               </Row>
             </Col>
           </Row>
@@ -430,9 +501,10 @@ const Home = () => {
             </Col>
           </Row>
         </Container>
-
-        <Footer />
       </section>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 };

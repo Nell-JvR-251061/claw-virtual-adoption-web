@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
@@ -6,6 +7,10 @@ import Footer from "../components/Footer";
 import "../styling/VirtualAdoption.css";
 
 function VirtualAdoption() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <nav>
@@ -346,7 +351,10 @@ function VirtualAdoption() {
                 CLAW through the contact details provided on our website.
               </span>
 
-              <span className="text-bold p-0 py-1" style={{ color: "var(--blue)" }}>
+              <span
+                className="text-bold p-0 py-1"
+                style={{ color: "var(--blue)" }}
+              >
                 Thank You for Supporting CLAW!
               </span>
               <span className="mb-4">

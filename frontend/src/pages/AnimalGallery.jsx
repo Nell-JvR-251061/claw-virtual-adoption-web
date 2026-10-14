@@ -81,7 +81,9 @@ function AnimalGallery() {
 
       <div>
         {!animals ? (
-          <p>Still waiting</p>
+          <div className="w-100 d-flex justify-content-center">
+            <h1>Their on their way!</h1>
+          </div>
         ) : (
           <Container className="dog-gallery-container">
             {animals.length === 0 ? (

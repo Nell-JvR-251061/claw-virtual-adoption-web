@@ -6,20 +6,13 @@ import "../styling/AnimalCard.css";
 function AnimalCard({ _animal }) {
   const navigate = useNavigate();
 
-  let imageId = getGoogleDriveImageUrl(_animal.image);
-
-  function getGoogleDriveImageUrl(_driveUrl) {
-    const match = _driveUrl.match(/\/file\/d\/([^/]+)/);
-    return match ? match[1] : null;
-  }
-
   return (
     <Container className="card mb-3 p-0" style={{ width: "18rem" }}>
       <Row className="card-body m-0 p-0">
         <Col className="p-3">
           <Row className="p-0 m-0">
             <img
-              src={`https://drive.google.com/thumbnail?id=${imageId}&sz=w1000"`}
+              src={_animal.image}
               alt={`A cute animal with the name: ${_animal.name}`}
               className="card-img-top p-0"
             ></img>

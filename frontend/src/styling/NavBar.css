@@ -31,4 +31,5 @@
 
 #logout-link:hover{
   color: red !important;
+  background-color: transparent !important;
 }

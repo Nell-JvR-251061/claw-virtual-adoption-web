@@ -1,9 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthManager";
 
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import {
+  Container,
+  Nav,
+  Navbar,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 
 import "../styling/NavBar.css";
 import clawLogo from "../assets/clawLogo.png";
@@ -21,6 +25,12 @@ function NavBar() {
     Logout();
     navigate("/");
   };
+
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Log Out?
+    </Tooltip>
+  );
 
   return (
     <Navbar expand="lg" className="nav-bar">
@@ -50,7 +60,11 @@ function NavBar() {
             }}
           >
             <Nav.Link
-              style={activePage === "/" ? { color: "var(--blue)" } : {color: "black"}}
+              style={
+                activePage === "/"
+                  ? { color: "var(--blue)" }
+                  : { color: "black" }
+              }
               onClick={() => {
                 navigate("/");
               }}
@@ -61,7 +75,7 @@ function NavBar() {
               style={
                 activePage === "/AnimalGallery"
                   ? { color: "var(--blue)" }
-                  : {color: "black"}
+                  : { color: "black" }
               }
               onClick={() => {
                 navigate("/AnimalGallery");
@@ -73,7 +87,7 @@ function NavBar() {
               style={
                 activePage === "/VirtualAdoption"
                   ? { color: "var(--blue)" }
-                  : {color: "black" }
+                  : { color: "black" }
               }
               onClick={() => {
                 navigate("/VirtualAdoption");
@@ -107,7 +121,13 @@ function NavBar() {
               </Nav.Link>
             ) : (
               <Nav.Link id="logout-link" onClick={LoggingOut}>
-                Log Out
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 100, hide: 400 }}
+                  overlay={renderTooltip}
+                >
+                  <span>{user.name}</span>
+                </OverlayTrigger>
               </Nav.Link>
             )}
           </Nav>
