@@ -6,7 +6,8 @@ import "../../styling/AnimalAddForm.css";
 
 function AnimalAddFrom({ onVariableChange }) {
   //---------- Server and Navigation References----------
-  const API = "http://localhost:5000/api/dog";
+  const API =
+    "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
   const navigate = useNavigate();
 
   //---------- Bootstrap Modal Code ----------
@@ -129,7 +130,6 @@ function AnimalAddFrom({ onVariableChange }) {
       );
       return;
     }
-
 
     try {
       const res = await fetch(API + "/register", {

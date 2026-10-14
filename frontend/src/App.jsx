@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import NavBar from "./components/NavBar";
@@ -24,7 +24,7 @@ import globalIcon from "./assets/globalIcon.png";
 const Home = () => {
   const navigate = useNavigate();
 
-  const API = "http://localhost:5000/api/dog";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
 
   const [animals, setAnimals] = useState([]);
 
@@ -512,7 +512,7 @@ const Home = () => {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/AnimalGallery" element={<AnimalGallery />} />
@@ -521,7 +521,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
