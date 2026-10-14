@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     open: true
-  }
+  },
+  base: '/claw-virtual-adoption-web/', 
 })
 
