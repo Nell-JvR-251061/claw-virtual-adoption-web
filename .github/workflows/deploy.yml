@@ -41,5 +41,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # Targets the build folder inside the frontend directory
-          folder: frontend/build # Change to 'frontend/dist' if you are using Vite
+          folder: frontend/dist # Change to 'frontend/dist' if you are using Vite
           branch: gh-pages # The branch the action will deploy to
