@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import "../styling/AnimalProfile.css";
 
 function AnimalProfile() {
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
+  const API = "claw-virtual-adoption-web-production.up.railway.app/api/dog";
 
   const location = useLocation();
   const animalId = location.state?.animalId;
