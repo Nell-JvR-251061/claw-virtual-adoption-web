@@ -8,7 +8,7 @@ import AnimalCard from "../components/AnimalCard";
 import "../styling/AnimalGallery.css";
 
 function AnimalGallery() {
-  const API = "claw-virtual-adoption-web-production.up.railway.app/api/dog";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
 
   const [animals, setAnimals] = useState([]);
 
