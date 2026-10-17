@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form, Modal } from "react-bootstrap";
 
-import loginLeftImage from "../assets/girlHugDog.jpg";
-import pawIcon from "../assets/pawIcon.png";
-import clawLogo from "../assets/clawLogo.png";
+import loginLeftImage from "../assets/girlHugDog.webp";
+import pawIcon from "../assets/pawIcon.webp";
+import clawLogo from "../assets/clawLogo.webp";
 
 import { useAuth } from "../components/AuthManager";
 

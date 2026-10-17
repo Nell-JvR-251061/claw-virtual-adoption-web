@@ -4,8 +4,8 @@ import { useAuth } from "../components/AuthManager";
 
 import { Container, Row, Col, Button, Form, Modal, Nav } from "react-bootstrap";
 
-import clawLogo from "../assets/clawLogo.png";
-import profileIcon from "../assets/profileIcon.png";
+import clawLogo from "../assets/clawLogo.webp";
+import profileIcon from "../assets/profileIcon.webp";
 import SquaresIcon from "../assets/squaresIcon.svg?react";
 import DogLogIcon from "../assets/dogLogIcon.svg?react";
 import HandAndPawIcon from "../assets/handAndPawIcon.svg?react";

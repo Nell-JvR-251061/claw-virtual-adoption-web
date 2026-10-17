@@ -1,7 +1,7 @@
 @import url("../styling/Main.css");
 
 .info-container {
-  background: url("../assets/pawPrints.jpg") no-repeat center / cover;
+  background: url("../assets/pawPrints.webp") no-repeat center / cover;
 }
 
 .inner-container {

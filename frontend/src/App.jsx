@@ -17,9 +17,9 @@ import AnimalGallery from "./pages/AnimalGallery";
 import VirtualAdoption from "./pages/VirtualAdoption";
 import AnimalProfile from "./pages/AnimalProfile";
 
-import geoIcon from "./assets/geoIcon.png";
-import emailIcon from "./assets/emailIcon.png";
-import globalIcon from "./assets/globalIcon.png";
+import geoIcon from "./assets/geoIcon.webp";
+import emailIcon from "./assets/emailIcon.webp";
+import globalIcon from "./assets/globalIcon.webp";
 
 const Home = () => {
   const navigate = useNavigate();

@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 
 import "../styling/NavBar.css";
-import clawLogo from "../assets/clawLogo.png";
+import clawLogo from "../assets/clawLogo.webp";
 
 function NavBar() {
   const { user } = useAuth();

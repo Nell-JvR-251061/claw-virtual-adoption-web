@@ -1,7 +1,7 @@
 .header-image {
   width: 100%;
   height: 91.5vh;
-  background: url("./assets/homeImageOne.png") no-repeat center / cover;
+  background: url("./assets/homeImageOne.webp") no-repeat center / cover;
   -webkit-mask-image: linear-gradient(to left, black, transparent);
   mask-image: linear-gradient(to left, black, transparent);
 }
@@ -9,14 +9,14 @@
 .claw-icon-image {
   height: 100%;
   width: auto;
-  background: url("./assets/pawIcon.png") no-repeat center / cover;
+  background: url("./assets/pawIcon.webp") no-repeat center / cover;
   flex-shrink: 0;
   min-height: 72px;
   min-width: 72px;
 }
 
 .post-header-section {
-  background: url("./assets/pawPrints.jpg") no-repeat center / cover;
+  background: url("./assets/pawPrints.webp") no-repeat center / cover;
 }
 
 #about-us-container {
@@ -30,7 +30,7 @@
 }
 
 #virtual-adoption-image {
-  background: url("./assets/dogLead.jpg") no-repeat center / cover;
+  background: url("./assets/dogLead.webp") no-repeat center / cover;
   aspect-ratio: 2/1;
   object-fit: cover;
   border-radius: 18px;
@@ -38,7 +38,7 @@
 
 #more-info-image {
     /* Combined using the 'background' shorthand */
-    background: url("./assets/clawOldLogo.png") no-repeat center / cover;
+    background: url("./assets/clawOldLogo.webp") no-repeat center / cover;
     
     width: 100%;
     height: auto;
