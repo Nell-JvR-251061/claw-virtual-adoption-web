@@ -7,6 +7,6 @@
   mask-image: linear-gradient(to left, black, transparent);
 }
 
-.dog-gallery-container {
+#dog-gallery-container {
   background: url("../assets/pawPrints.webp") no-repeat center / cover;
 }

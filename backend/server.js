@@ -11,7 +11,8 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const allowedOrigins = [
   'https://claw-virtual-adoption-web.netlify.app',
   'https://claw-virtual-adoption.co.za',
-  'https://www.claw-virtual-adoption.co.za'
+  'https://www.claw-virtual-adoption.co.za',
+  'http://localhost:5173'
 ];
 
 app.use(cors({
@@ -27,6 +28,7 @@ app.use(cors({
     },
     credentials: true // Keep this true if you use cookies/sessions
 }));
+
 app.use(express.json());
 
 const authRoutes = require('./routes/authRoutes');

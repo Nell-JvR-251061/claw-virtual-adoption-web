@@ -13,7 +13,8 @@ import "../styling/Login.css";
 
 function Login() {
   //---------- Server and Navigation References----------
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/auth";
+  const API =
+    "https://claw-virtual-adoption-web-production.up.railway.app/api/auth";
   const navigate = useNavigate();
   const { Login } = useAuth();
 
@@ -235,9 +236,10 @@ function Login() {
       </Modal>
 
       <Container fluid className="p-0">
-        <Row className="m-0">
-          <Col id="login-left" className="p-0">
+        <Row className="m-0 vh-100">
+          <Col sm={6} className="p-0 d-none d-md-block" id="login-left">
             <img
+              className="h-100"
               id="login-left-image"
               alt="A smiling girl hugging a panting dog"
               src={loginLeftImage}
@@ -251,7 +253,10 @@ function Login() {
             />
           </Col>
 
-          <Col className="p-0 me-5 d-flex flex-column justify-content-center">
+          <Col
+            id="login-right"
+            className="px-4 px-md-5 py-5 py-md-3 d-flex flex-column justify-content-center"
+          >
             <Row className="m-0">
               <Col className="p-0">
                 <Row
@@ -292,7 +297,9 @@ function Login() {
                   {isLogging ? (
                     <>
                       <Form onSubmit={LoginSubmit}>
-                        <Form.Group className="mb-3" controlId="formGridName">
+                        <Form.Group as={Col}
+                            controlId="formGridName"
+                            className="mb-3">
                           <Form.Label>Name</Form.Label>
                           <Form.Control
                             type="text"
@@ -326,7 +333,7 @@ function Login() {
                         </Form.Group>
 
                         <Button
-                          className="button-primary mt-4 p-2 w-25"
+                          className="button-primary mt-4 p-2 w-100 w-md-25"
                           type="submit"
                         >
                           Log In
@@ -337,7 +344,13 @@ function Login() {
                     <>
                       <Form onSubmit={RegisterSubmit}>
                         <Row className="mb-3">
-                          <Form.Group as={Col} controlId="formGridName">
+                          <Form.Group
+                            as={Col}
+                            md={12}
+                            lg={6}
+                            controlId="formGridName"
+                            className="mb-3 mb-lg-0"
+                          >
                             <Form.Label>Name</Form.Label>
                             <Form.Control
                               type="text"
@@ -382,7 +395,13 @@ function Login() {
                         </Form.Group>
 
                         <Row className="mb-3">
-                          <Form.Group as={Col} controlId="formGridPassword">
+                          <Form.Group
+                            as={Col}
+                            md={12}
+                            lg={6}
+                            controlId="formGridPassword"
+                            className="mb-3 mb-lg-0"
+                          >
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                               type="password"
@@ -406,12 +425,13 @@ function Login() {
                           </Form.Group>
                         </Row>
 
-                        <Button
-                          className="button-primary mt-4 p-2 w-25"
-                          type="submit"
-                        >
-                          Sign Up
-                        </Button>
+  
+                          <Button
+                            className="button-primary mt-4 p-2 w-100 w-md-50"
+                            type="submit"
+                          >
+                            Submit
+                          </Button>
                       </Form>
                     </>
                   )}

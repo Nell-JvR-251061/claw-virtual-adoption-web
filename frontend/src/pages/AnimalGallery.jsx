@@ -35,7 +35,7 @@ function AnimalGallery() {
         <NavBar />
       </nav>
 
-      <Container fluid className="m-0 mb-5">
+      <Container fluid className="m-0">
         <Row>
           <Col className="px-5 col-5 d-flex flex-column justify-content-center">
             <Row className="w-100 d-flex flex-row align-items-center">
@@ -79,13 +79,13 @@ function AnimalGallery() {
         </Row>
       </Container>
 
-      <div>
+      <div  id="dog-gallery-container" className="py-5">
         {!animals ? (
           <div className="w-100 d-flex justify-content-center">
             <h1>Their on their way!</h1>
           </div>
         ) : (
-          <Container className="dog-gallery-container">
+          <Container>
             {animals.length === 0 ? (
               <p>No dogs found in the database.</p>
             ) : (
