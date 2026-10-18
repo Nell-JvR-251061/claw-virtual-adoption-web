@@ -24,6 +24,7 @@ app.use(cors({
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
+            console.error("Blocked CORS origin:", origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -47,5 +48,5 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.log(err));
 
 app.listen(PORT, () => {
-    console.log("---------- Server running on port ${PORT} ----------");
+    console.log(`---------- Server running on port ${PORT} ----------`);
 });
