@@ -13,6 +13,10 @@ function VirtualAdoption() {
 
   return (
     <>
+      <head>
+        <title>CVA | Adoption</title>
+      </head>
+
       <nav>
         <NavBar />
       </nav>

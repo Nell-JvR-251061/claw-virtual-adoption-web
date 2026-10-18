@@ -13,8 +13,7 @@ import "../styling/Login.css";
 
 function Login() {
   //---------- Server and Navigation References----------
-  const API =
-    "https://claw-virtual-adoption-web-production.up.railway.app/api/auth";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
   const navigate = useNavigate();
   const { Login } = useAuth();
 
@@ -118,7 +117,7 @@ function Login() {
     }
 
     try {
-      const res = await fetch(API + "/register", {
+      const res = await fetch(API + "/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -135,12 +134,14 @@ function Login() {
       }
 
       const saved = await res.json();
+
       Login(
         {
           name: saved.name,
           role: saved.role,
           surname: saved.surname,
           email: saved.email,
+          id: saved.id,
         },
         saved.token,
       );
@@ -177,7 +178,7 @@ function Login() {
     }
 
     try {
-      const res = await fetch(API + "/login", {
+      const res = await fetch(API + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -193,12 +194,16 @@ function Login() {
 
       const data = await res.json();
 
+      console.log(data);
+
       Login(
         {
           name: data.name,
           role: data.role,
           surname: data.surname,
           email: data.email,
+          id: data.id,
+          animals: data.animals,
         },
         data.token,
       );
@@ -218,6 +223,11 @@ function Login() {
 
   return (
     <>
+      <head>
+        {isLogging ? (
+        <title>CVA | Login</title>) : (<title>CVA | Sign Up</title>)}
+      </head>
+
       <Modal
         id={modalError ? "modal-error" : undefined}
         show={show}
@@ -297,9 +307,11 @@ function Login() {
                   {isLogging ? (
                     <>
                       <Form onSubmit={LoginSubmit}>
-                        <Form.Group as={Col}
-                            controlId="formGridName"
-                            className="mb-3">
+                        <Form.Group
+                          as={Col}
+                          controlId="formGridName"
+                          className="mb-3"
+                        >
                           <Form.Label>Name</Form.Label>
                           <Form.Control
                             type="text"
@@ -425,13 +437,12 @@ function Login() {
                           </Form.Group>
                         </Row>
 
-  
-                          <Button
-                            className="button-primary mt-4 p-2 w-100 w-md-50"
-                            type="submit"
-                          >
-                            Submit
-                          </Button>
+                        <Button
+                          className="button-primary mt-4 p-2 w-100 w-md-50"
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
                       </Form>
                     </>
                   )}

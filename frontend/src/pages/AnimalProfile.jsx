@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -8,24 +8,44 @@ import Footer from "../components/Footer";
 import "../styling/AnimalProfile.css";
 
 function AnimalProfile() {
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
+
+  //---------- Bootstrap Modal Code ----------
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
+  const [modalError, setModalError] = useState(false);
 
   const location = useLocation();
   const animalId = location.state?.animalId;
 
   const [animal, setAnimal] = useState({});
+  const [isAdopted, setIsAdopted] = useState(false);
+
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("user") || "{}"),
+  );
+  const [isAdoptedByUser, setIsAdoptedByUser] = useState(
+    user.animals?.includes(animalId) ?? false,
+  );
 
   useEffect(() => {
     const getAnimal = async () => {
       try {
         console.log(animalId);
 
-        const response = await fetch(`${API}/get/${animalId}`);
+        const response = await fetch(`${API}/dog/get/${animalId}`);
         const data = await response.json();
 
         console.log(data);
+        console.log(user);
+        console.log(isAdoptedByUser);
 
         setAnimal(data);
+        setIsAdopted(data.adoptionAvailability);
       } catch (error) {
         console.error("The backend has ran away...", error);
       }
@@ -34,44 +54,137 @@ function AnimalProfile() {
     getAnimal();
   }, []);
 
-//   function getGoogleDriveImageUrl(driveUrl) {
-//     if (!driveUrl) {
-//       return "";
-//     }
+  //Shows modal with custom information
+  const DisplayModal = (_title, _body, _isError) => {
+    setModalTitle(_title);
+    setModalBody(_body);
+    setModalError(_isError);
 
-//     const match = driveUrl.match(/\/file\/d\/([^/]+)/);
+    handleShow();
+  };
 
-//     if (!match) return driveUrl;
+  const CheckIfAdoptable = async () => {
+    if (!user) {
+      DisplayModal(
+        "One Moment!",
+        `You'll need to signup / login to adopt ${animal.name}.`,
+        true,
+      );
+      return;
+    }
 
-//     const imageId = match[1];
+    if (user.animals.length > 0) {
+      DisplayModal(
+        "Sorry!",
+        `You either have adopted an animal already OR it has not been six months since your last adoption.`,
+        true,
+      );
+      return;
+    }
 
-//     return `https://drive.google.com/thumbnail?id=${imageId}&sz=w1000`;
-//   }
+    try {
+      const updatedAnimals = [...(user.animals || []), animalId];
+
+      const res = await fetch(API + "/auth/update/" + user.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adoptedAnimals: updatedAnimals,
+        }),
+      });
+
+      if (!res.ok) {
+        const e = await res.json();
+        throw new Error(e.message);
+      }
+
+      try {
+        const res = await fetch(API + "/dog/update/" + animalId, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            adoptionAvailability: false,
+            adopter: user.name + " " + user.surname,
+            adopterEmail: user.email,
+          }),
+        });
+
+        if (!res.ok) {
+          const e = await res.json();
+          throw new Error(e.message);
+        }
+
+        const data = await res.json();
+
+        setAnimal(data);
+        setIsAdopted(data.adoptionAvailability);
+      } catch (e) {
+        console.log({ msg: e.message, type: "error" });
+        DisplayModal("Error!", e.message, true);
+      }
+
+      DisplayModal(
+        `${animal.name} has found a home!`,
+        `Thank you ${user.name} for choosing to support ${animal.name}!`,
+        false,
+      );
+
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+
+      storedUser.animals = updatedAnimals;
+
+      sessionStorage.setItem("user", JSON.stringify(storedUser));
+    } catch (e) {
+      console.log({ msg: e.message, type: "error" });
+      DisplayModal("Error!", e.message, true);
+    }
+  };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <nav>
-        <NavBar />
-      </nav>
-
-      <Container
-        fluid
-        id="profile-container"
-        className="m-0 my-auto"
-        style={{ "font-family": "var(--inter)" }}
+    <>
+      <Modal
+        id={modalError ? "modal-error" : undefined}
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
       >
-        <Row className="m-0">
-          <Col className="col-3 p-0">
-            <Row className="m-0 mb-3">
-              <h1
-                className="m-0 p-0"
-                style={{ "font-weight": "700", "text-align": "center" }}
-              >
-                {animal.name}
-              </h1>
-            </Row>
-            <Row className="m-0 mb-3" id="animal-profile-image-container">
+        <Modal.Header>
+          <Modal.Title style={{ fontWeight: "700" }}>{modalTitle}</Modal.Title>
+        </Modal.Header>
 
+        <Modal.Body>{modalBody}</Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleClose}>Okay</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div className="d-flex flex-column min-vh-100">
+        <nav>
+          <NavBar />
+        </nav>
+
+        <Container
+          fluid
+          id="profile-container"
+          className="m-0 my-auto"
+          style={{ "font-family": "var(--inter)" }}
+        >
+          <Row className="m-0">
+            <Col className="col-3 p-0">
+              <Row className="m-0 mb-3">
+                <h1
+                  className="m-0 p-0"
+                  style={{ "font-weight": "700", "text-align": "center" }}
+                >
+                  {animal.name}
+                </h1>
+              </Row>
+              <Row className="m-0 mb-3" id="animal-profile-image-container">
                 <img
                   className="p-0"
                   id="animal-profile-image"
@@ -81,158 +194,173 @@ function AnimalProfile() {
                     console.error("Failed to load image:", e.currentTarget.src);
                   }}
                 />
+              </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <h3
+                    className="profile-quick-info"
+                    style={{ "text-align": "center" }}
+                  >
+                    Status:{" "}
+                    {animal.adoptionAvailability ? (
+                      <span style={{ color: "var(--blue)" }}>Available</span>
+                    ) : isAdoptedByUser ? (
+                      <span style={{ color: "var(--blue)" }}>Yours</span>
+                    ) : (
+                      <span style={{ color: "red" }}>Unavailable</span>
+                    )}
+                  </h3>
+                </Col>
+              </Row>
+            </Col>
 
-            </Row>
-            <Row className="m-0">
-              <Col className="p-0">
-                <h3
-                  className="profile-quick-info"
-                  style={{ "text-align": "center" }}
-                >
-                  Status:{" "}
-                  {animal.gender ? (
-                    <span style={{ color: "var(--blue)" }}>Available</span>
-                  ) : (
-                    <span style={{ color: "red" }}>Unavailable</span>
-                  )}
-                </h3>
-              </Col>
-            </Row>
-          </Col>
+            <Col className="d-flex flex-column justify-content-center px-5">
+              <Row className="m-0">
+                <Col className="p-0">
+                  <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
+                    {animal.name}'s Story
+                  </h5>
+                </Col>
+              </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <p style={{ "font-weight": "400" }}>{animal.about}</p>
+                </Col>
+              </Row>
 
-          <Col className="d-flex flex-column justify-content-center px-5">
-            <Row className="m-0">
-              <Col className="p-0">
-                <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
-                  {animal.name}'s Story
-                </h5>
-              </Col>
-            </Row>
-            <Row className="m-0">
-              <Col className="p-0">
-                <p style={{ "font-weight": "400" }}>{animal.about}</p>
-              </Col>
-            </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
+                    Personality
+                  </h5>
+                </Col>
+              </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <p style={{ "font-weight": "400" }}>{animal.personality}</p>
+                </Col>
+              </Row>
 
-            <Row className="m-0">
-              <Col className="p-0">
-                <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
-                  Personality
-                </h5>
-              </Col>
-            </Row>
-            <Row className="m-0">
-              <Col className="p-0">
-                <p style={{ "font-weight": "400" }}>{animal.personality}</p>
-              </Col>
-            </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
+                    Information about {animal.name}
+                  </h5>
+                </Col>
+              </Row>
+              <Row className="m-0">
+                <Col className="p-0">
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Age:
+                        </span>{" "}
+                        {animal.age}
+                      </h5>
+                    </Col>
+                  </Row>
 
-            <Row className="m-0">
-              <Col className="p-0">
-                <h5 style={{ "font-weight": "700", color: "var(--blue)" }}>
-                  Information about {animal.name}
-                </h5>
-              </Col>
-            </Row>
-            <Row className="m-0">
-              <Col className="p-0">
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Age:
-                      </span>{" "}
-                      {animal.age}
-                    </h5>
-                  </Col>
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Gender:
+                        </span>{" "}
+                        {animal.gender}
+                      </h5>
+                    </Col>
+                  </Row>
+
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Breed:
+                        </span>{" "}
+                        {animal.breed}
+                      </h5>
+                    </Col>
+                  </Row>
+                </Col>
+
+                <Col className="p-0">
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Size:
+                        </span>{" "}
+                        {animal.size}
+                      </h5>
+                    </Col>
+                  </Row>
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Energy:
+                        </span>{" "}
+                        {animal.energy}
+                      </h5>
+                    </Col>
+                  </Row>
+                  <Row className="m-0 mb-2">
+                    <Col className="p-0">
+                      <h5 style={{ "font-weight": "400" }}>
+                        <span style={{ "font-weight": "700", color: "black:" }}>
+                          Located:
+                        </span>{" "}
+                        {animal.location}
+                      </h5>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+
+              <Row className="m-0 mb-2">
+                <Col className="p-0">
+                  <h5 style={{ "font-weight": "400" }}>
+                    <span style={{ "font-weight": "700", color: "black:" }}>
+                      Good With:
+                    </span>{" "}
+                    {animal.goodWith && animal.goodWith.join(" | ")}
+                  </h5>
+                </Col>
+              </Row>
+
+              <Row className="m-0 mb-2">
+                <Col className="p-0">
+                  <h5 style={{ "font-weight": "400" }}>
+                    <span style={{ "font-weight": "700", color: "black:" }}>
+                      Difficulty With:
+                    </span>{" "}
+                    {animal.badWith && animal.badWith.join(" | ")}
+                  </h5>
+                </Col>
+              </Row>
+
+              {isAdopted ? (
+                <Row className="d-flex justify-content-end">
+                  <Button
+                    className="button-primary w-25"
+                    onClick={CheckIfAdoptable}
+                  >
+                    Adopt {animal.name}
+                  </Button>
                 </Row>
+              ) : (
+                <></>
+              )}
+            </Col>
+          </Row>
+        </Container>
 
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Gender:
-                      </span>{" "}
-                      {animal.gender}
-                    </h5>
-                  </Col>
-                </Row>
-
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Breed:
-                      </span>{" "}
-                      {animal.breed}
-                    </h5>
-                  </Col>
-                </Row>
-              </Col>
-
-              <Col className="p-0">
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Size:
-                      </span>{" "}
-                      {animal.size}
-                    </h5>
-                  </Col>
-                </Row>
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Energy:
-                      </span>{" "}
-                      {animal.energy}
-                    </h5>
-                  </Col>
-                </Row>
-                <Row className="m-0 mb-2">
-                  <Col className="p-0">
-                    <h5 style={{ "font-weight": "400" }}>
-                      <span style={{ "font-weight": "700", color: "black:" }}>
-                        Located:
-                      </span>{" "}
-                      {animal.location}
-                    </h5>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-
-            <Row className="m-0 mb-2">
-              <Col className="p-0">
-                <h5 style={{ "font-weight": "400" }}>
-                  <span style={{ "font-weight": "700", color: "black:" }}>
-                    Good With:
-                  </span>{" "}
-                  {animal.goodWith && animal.goodWith.join(" | ")}
-                </h5>
-              </Col>
-            </Row>
-
-            <Row className="m-0 mb-2">
-              <Col className="p-0">
-                <h5 style={{ "font-weight": "400" }}>
-                  <span style={{ "font-weight": "700", color: "black:" }}>
-                    Difficulty With:
-                  </span>{" "}
-                  {animal.badWith && animal.badWith.join(" | ")}
-                </h5>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-
-      <footer className="mt-auto">
-        <Footer />
-      </footer>
-    </div>
+        <footer className="mt-auto">
+          <Footer />
+        </footer>
+      </div>
+    </>
   );
 }
 

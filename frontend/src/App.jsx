@@ -24,7 +24,7 @@ import globalIcon from "./assets/globalIcon.webp";
 const Home = () => {
   const navigate = useNavigate();
 
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
 
   const [animals, setAnimals] = useState([]);
 
@@ -47,7 +47,7 @@ const Home = () => {
   useEffect(() => {
     const getAnimals = async () => {
       try {
-        const response = await fetch(API);
+        const response = await fetch(API + "/dog");
         const data = await response.json();
 
         console.log(data);
@@ -75,6 +75,10 @@ const Home = () => {
 
   return (
     <>
+      <head>
+        <title>CVA | Home</title>
+      </head>
+
       <Modal
         id={modalError ? "modal-error" : undefined}
         show={show}

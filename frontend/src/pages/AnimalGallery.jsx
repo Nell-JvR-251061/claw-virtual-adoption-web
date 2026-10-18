@@ -8,14 +8,14 @@ import AnimalCard from "../components/AnimalCard";
 import "../styling/AnimalGallery.css";
 
 function AnimalGallery() {
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api/dog";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
 
   const [animals, setAnimals] = useState([]);
 
   useEffect(() => {
     const getAnimals = async () => {
       try {
-        const response = await fetch(API);
+        const response = await fetch(API + "/dog");
         const data = await response.json();
 
         console.log(data);
@@ -31,6 +31,10 @@ function AnimalGallery() {
 
   return (
     <>
+      <head>
+        <title>CVA | Gallery</title>
+      </head>
+
       <nav>
         <NavBar />
       </nav>
@@ -70,7 +74,8 @@ function AnimalGallery() {
                 "--font-weight": "400",
               }}
             >
-              Meet a furry friend currently in CLAW’s care. Choose a furry friend whose story speaks to you and become part of their journey.
+              Meet a furry friend currently in CLAW’s care. Choose a furry
+              friend whose story speaks to you and become part of their journey.
             </Row>
           </Col>
           <Col className="p-0">
@@ -79,22 +84,31 @@ function AnimalGallery() {
         </Row>
       </Container>
 
-      <div  id="dog-gallery-container" className="py-5">
+      <div id="dog-gallery-container" className="py-5">
         {!animals ? (
           <div className="w-100 d-flex justify-content-center">
             <h1>Their on their way!</h1>
           </div>
         ) : (
           <Container>
-            {animals.length === 0 ? (
-              <p>No dogs found in the database.</p>
+            {animals.filter((animal) => animal.adoptionAvailability === true)
+              .length === 0 ? (
+              <p>No available dogs found in the database.</p>
             ) : (
               <Row>
-                {animals.map((animal) => (
-                  <Col key={animal._id} sm={12} md={6} lg={4} className="mb-5">
-                    <AnimalCard _animal={animal} />
-                  </Col>
-                ))}
+                {animals
+                  .filter((animal) => animal.adoptionAvailability === true)
+                  .map((animal) => (
+                    <Col
+                      key={animal._id}
+                      sm={12}
+                      md={6}
+                      lg={4}
+                      className="mb-5"
+                    >
+                      <AnimalCard _animal={animal} />
+                    </Col>
+                  ))}
               </Row>
             )}
           </Container>

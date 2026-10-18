@@ -87,9 +87,6 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        console.log(user);
-        console.log("Adopted animals:", user.adoptedAnimals);
-
         res.status(200).json({
             id: user._id,
             role: user.role,

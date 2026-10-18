@@ -1,13 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthManager";
 
-import {
-  Container,
-  Nav,
-  Navbar,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown, Tooltip } from "react-bootstrap";
 
 import "../styling/NavBar.css";
 import clawLogo from "../assets/clawLogo.webp";
@@ -25,12 +19,6 @@ function NavBar() {
     Logout();
     navigate("/");
   };
-
-  const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Log Out?
-    </Tooltip>
-  );
 
   return (
     <Navbar expand="lg" className="nav-bar">
@@ -120,15 +108,25 @@ function NavBar() {
                 Login
               </Nav.Link>
             ) : (
-              <Nav.Link id="logout-link" onClick={LoggingOut}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 400 }}
-                  overlay={renderTooltip}
-                >
-                  <span>{user.name}</span>
-                </OverlayTrigger>
-              </Nav.Link>
+              <NavDropdown title={user.name} id="basic-nav-dropdown">
+                {user.animals ? (
+                  <NavDropdown.Item
+                    id="nav-link"
+                    onClick={() => {
+                      navigate("/AnimalProfile", {
+                        state: { animalId: user.animals[0] },
+                      });
+                    }}
+                  >
+                    Backing Animals
+                  </NavDropdown.Item>
+                ) : (
+                  <></>
+                )}
+                <NavDropdown.Item id="logout-link" onClick={LoggingOut}>
+                  Log Out
+                </NavDropdown.Item>
+              </NavDropdown>
             )}
           </Nav>
         </Navbar.Collapse>
