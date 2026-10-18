@@ -93,12 +93,35 @@ router.post('/login', async (req, res) => {
             name: user.name,
             surname: user.surname,
             email: user.email,
+            animals: user.adoptedAnimals,
             token
         });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
-})
+});
+
+//Update a selected user's details (Put)
+router.put("/update/:id", async (req, res) => {
+  try {
+    const userToBeUpdated = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!userToBeUpdated) {
+      return res.status(404).json({ message: "User not found..." });
+    }
+
+    res.status(200).json(userToBeUpdated);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 module.exports = router;
