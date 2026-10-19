@@ -38,7 +38,13 @@ router.post('/register', async (req, res) => {
                 role: saved.role
             },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            {
+                expiresIn: '1h',
+                issuer: "claw-virtual-adoption",
+                audience: "claw-virtual-adoption-api",
+                algorithm: "HS256",
+                subject: String(saved._id)
+            }
         );
 
         res.status(201).json({
@@ -68,8 +74,8 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ message: 'Invalid name, email or password.' });
         }
-        
-        if (name != user.name){
+
+        if (name != user.name) {
             return res.status(401).json({ message: 'Invalid name, email or password.' });
         }
 
@@ -85,7 +91,13 @@ router.post('/login', async (req, res) => {
                 role: user.role,
             },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            {
+                expiresIn: '1h',
+                issuer: "claw-virtual-adoption",
+                audience: "claw-virtual-adoption-api",
+                algorithm: "HS256",
+                subject: String(saved._id)
+            }
         );
 
         res.status(200).json({
@@ -105,24 +117,24 @@ router.post('/login', async (req, res) => {
 
 //Update a selected user's details (Put)
 router.put("/update/:id", authToken, async (req, res) => {
-  try {
-    const userToBeUpdated = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    try {
+        const userToBeUpdated = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+            },
+        );
 
-    if (!userToBeUpdated) {
-      return res.status(404).json({ message: "User not found..." });
+        if (!userToBeUpdated) {
+            return res.status(404).json({ message: "User not found..." });
+        }
+
+        res.status(200).json(userToBeUpdated);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
-
-    res.status(200).json(userToBeUpdated);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
 });
 
 module.exports = router;
