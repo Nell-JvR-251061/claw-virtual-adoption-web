@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Dog = require("../models/dog");
+const authToken = require('../middleware/middleware');
 
 //Register a new dog
 router.post('/register', async (req, res) => {
@@ -59,7 +60,7 @@ router.get("/get/:id", async (req, res) => {
 });
 
 //Update a selected dog's details
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", authToken, async (req, res) => {
   try {
     const dogToBeUpdated = await Dog.findByIdAndUpdate(
       req.params.id,
@@ -81,7 +82,7 @@ router.put("/update/:id", async (req, res) => {
 });
 
 //Delete a selected dog
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", authToken,  async (req, res) => {
   try {
     const dogToBeDeleted = await Dog.findByIdAndDelete(req.params.id);
 

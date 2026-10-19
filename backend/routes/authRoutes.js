@@ -3,7 +3,8 @@ const router = express.Router();
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require("../models/user");
+const User = require('../models/user');
+const authToken = require('../middleware/middleware');
 
 // Register (post)
 router.post('/register', async (req, res) => {
@@ -103,7 +104,7 @@ router.post('/login', async (req, res) => {
 });
 
 //Update a selected user's details (Put)
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", authToken, async (req, res) => {
   try {
     const userToBeUpdated = await User.findByIdAndUpdate(
       req.params.id,
