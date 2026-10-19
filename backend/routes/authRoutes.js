@@ -96,7 +96,7 @@ router.post('/login', async (req, res) => {
                 issuer: "claw-virtual-adoption",
                 audience: "claw-virtual-adoption-api",
                 algorithm: "HS256",
-                subject: String(saved._id)
+                subject: String(user._id)
             }
         );
 
