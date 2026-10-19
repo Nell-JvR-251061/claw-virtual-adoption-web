@@ -162,7 +162,7 @@ function AnimalAddFrom({ onVariableChange }) {
 
       onVariableChange("Overview");
     } catch (e) {
-      console.log({ msg: e.message, type: "error" });
+      //console.log({ msg: e.message, type: "error" });
       DisplayModal("Error!", e.message, true);
       return;
     }

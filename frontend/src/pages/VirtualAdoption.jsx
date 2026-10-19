@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import SEO from "../components/SEO";
 
 import "../styling/VirtualAdoption.css";
 
@@ -13,9 +14,11 @@ function VirtualAdoption() {
 
   return (
     <>
-      <head>
-        <title>CVA | Adoption</title>
-      </head>
+      <SEO
+        title="Virtual Pet Adoption & Sponsorship"
+        description="Sponsor an animal remotely! Help fund food, medical care, and shelter for animals in need through virtual adoption."
+        path="/VirtualAdoption"
+      />
 
       <nav>
         <NavBar />

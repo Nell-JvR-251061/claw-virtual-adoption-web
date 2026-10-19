@@ -111,14 +111,14 @@ function NavBar() {
               <NavDropdown title={user.name} id="basic-nav-dropdown">
                 {user.animals ? (
                   <NavDropdown.Item
-                    id="nav-link"
+                    id="nav-link-animals"
                     onClick={() => {
                       navigate("/AnimalProfile", {
                         state: { animalId: user.animals[0] },
                       });
                     }}
                   >
-                    Backing Animals
+                    Backed Animals
                   </NavDropdown.Item>
                 ) : (
                   <></>

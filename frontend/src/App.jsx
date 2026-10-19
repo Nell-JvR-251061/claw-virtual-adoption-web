@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import NavBar from "./components/NavBar";
 import AnimalCard from "./components/AnimalCard";
 import Footer from "./components/Footer";
-import { AuthProvider, useAuth } from "./components/AuthManager";
+import { AuthProvider } from "./components/AuthManager";
+import SEO from "./components/SEO";
 
 import "./App.css";
 import "./styling/Main.css";
@@ -50,7 +52,7 @@ const Home = () => {
         const response = await fetch(API + "/dog");
         const data = await response.json();
 
-        console.log(data);
+        //console.log(data);
 
         setAnimals(data);
       } catch (error) {
@@ -75,9 +77,11 @@ const Home = () => {
 
   return (
     <>
-      <head>
-        <title>CVA | Home</title>
-      </head>
+      <SEO
+        title="Adopt a Virtual Pet & Save a Life"
+        description="Find your perfect furry companion today. Browse hundreds of lovable animals waiting for a virtual home at Claw Virtual Adoption."
+        path="/"
+      />
 
       <Modal
         id={modalError ? "modal-error" : undefined}
@@ -438,6 +442,7 @@ const Home = () => {
                     src={geoIcon}
                     className="icons"
                     style={{ height: "50%" }}
+                    alt="Icon of a waypoint."
                   ></img>
                 </Col>
                 <Col className="d-flex align-items-center">
@@ -461,6 +466,7 @@ const Home = () => {
                     src={emailIcon}
                     className="icons"
                     style={{ height: "50%" }}
+                    alt="Icon of a envelop."
                   ></img>
                 </Col>
                 <Col className="d-flex align-items-center">
@@ -485,6 +491,7 @@ const Home = () => {
                     src={globalIcon}
                     className="icons"
                     style={{ height: "50%" }}
+                    alt="Icon of the globe."
                   ></img>
                 </Col>
                 <Col className="d-flex align-items-center">
@@ -516,16 +523,18 @@ const Home = () => {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/AnimalGallery" element={<AnimalGallery />} />
-          <Route path="/AnimalProfile" element={<AnimalProfile />} />
-          <Route path="/VirtualAdoption" element={<VirtualAdoption />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-        </Routes>
-      </BrowserRouter>
+      <HelmetProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/AnimalGallery" element={<AnimalGallery />} />
+            <Route path="/AnimalProfile" element={<AnimalProfile />} />
+            <Route path="/VirtualAdoption" element={<VirtualAdoption />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
+      </HelmetProvider>
     </AuthProvider>
   );
 }

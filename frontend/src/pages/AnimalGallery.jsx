@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Form, Modal, Nav } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import AnimalCard from "../components/AnimalCard";
+import SEO from "../components/SEO";
 
 import "../styling/AnimalGallery.css";
 
@@ -18,7 +19,7 @@ function AnimalGallery() {
         const response = await fetch(API + "/dog");
         const data = await response.json();
 
-        console.log(data);
+        //console.log(data);
 
         setAnimals(data);
       } catch (error) {
@@ -31,9 +32,11 @@ function AnimalGallery() {
 
   return (
     <>
-      <head>
-        <title>CVA | Gallery</title>
-      </head>
+      <SEO
+        title="Browse Virtual Adoptable Pets"
+        description="Meet our virtual adoptable animals. Browse through our current selection of dogs to add one to your family."
+        path="/AnimalGallery"
+      />
 
       <nav>
         <NavBar />

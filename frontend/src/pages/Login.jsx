@@ -7,6 +7,7 @@ import pawIcon from "../assets/pawIcon.webp";
 import clawLogo from "../assets/clawLogo.webp";
 
 import { useAuth } from "../components/AuthManager";
+import SEO from '../components/SEO';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styling/Login.css";
@@ -154,7 +155,7 @@ function Login() {
         navigate("/");
       }
     } catch (e) {
-      console.log({ msg: e.message, type: "error" });
+      //console.log({ msg: e.message, type: "error" });
       DisplayModal("Error!", e.message, true);
       return;
     }
@@ -194,7 +195,7 @@ function Login() {
 
       const data = await res.json();
 
-      console.log(data);
+      //console.log(data);
 
       Login(
         {
@@ -216,17 +217,14 @@ function Login() {
         navigate("/");
       }
     } catch (e) {
-      console.log({ msg: e.message, type: "error" });
+      //console.log({ msg: e.message, type: "error" });
       DisplayModal("Error!", e.message, true);
     }
   };
 
   return (
     <>
-      <head>
-        {isLogging ? (
-        <title>CVA | Login</title>) : (<title>CVA | Sign Up</title>)}
-      </head>
+      <SEO title={isLogging ? "Login" : "Sign Up"} description={isLogging ? "Log into your Claw profile." : "Sign up for a Claw profile."} path="/Login" noIndex={true} />
 
       <Modal
         id={modalError ? "modal-error" : undefined}
@@ -256,7 +254,7 @@ function Login() {
             ></img>
             <img
               id="claw-logo-login"
-              alt="Claw Logo"
+              alt="The Claw Logo"
               src={clawLogo}
               width="100px"
               height="auto"

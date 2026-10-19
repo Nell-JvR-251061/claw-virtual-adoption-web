@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import SEO from "../components/SEO";
 
 import "../styling/AnimalProfile.css";
 
@@ -32,27 +33,36 @@ function AnimalProfile() {
     user.animals?.includes(animalId) ?? false,
   );
 
+  const petName = animal?.name || "Adoptable Pet";
+  const petType = animal?.breed || "Rescue Animal";
+
   useEffect(() => {
     const getAnimal = async () => {
+      if (!animalId) return;
+
       try {
-        console.log(animalId);
-
         const response = await fetch(`${API}/dog/get/${animalId}`);
-        const data = await response.json();
 
-        console.log(data);
-        console.log(user);
-        console.log(isAdoptedByUser);
+        if (!response.ok) {
+          throw new Error("Failed to fetch animal details");
+        }
+
+        const data = await response.json();
 
         setAnimal(data);
         setIsAdopted(data.adoptionAvailability);
+
+        setIsAdoptedByUser(
+          data.adopterEmail === user.email ||
+            (user.animals?.includes(animalId) ?? false),
+        );
       } catch (error) {
-        console.error("The backend has ran away...", error);
+        console.error("Failed to fetch animal:", error);
       }
     };
 
     getAnimal();
-  }, []);
+  }, [animalId, API, user.email, user.animals]);
 
   //Shows modal with custom information
   const DisplayModal = (_title, _body, _isError) => {
@@ -64,7 +74,7 @@ function AnimalProfile() {
   };
 
   const CheckIfAdoptable = async () => {
-    if (!user) {
+    if (!user?.id) {
       DisplayModal(
         "One Moment!",
         `You'll need to signup / login to adopt ${animal.name}.`,
@@ -73,7 +83,7 @@ function AnimalProfile() {
       return;
     }
 
-    if (user.animals.length > 0) {
+    if ((user.animals?.length ?? 0) > 0) {
       DisplayModal(
         "Sorry!",
         `You either have adopted an animal already OR it has not been six months since your last adoption.`,
@@ -83,12 +93,14 @@ function AnimalProfile() {
     }
 
     try {
+      const token = sessionStorage.getItem("token");
       const updatedAnimals = [...(user.animals || []), animalId];
 
       const res = await fetch(API + "/auth/update/" + user.id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           adoptedAnimals: updatedAnimals,
@@ -105,6 +117,7 @@ function AnimalProfile() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             adoptionAvailability: false,
@@ -123,7 +136,7 @@ function AnimalProfile() {
         setAnimal(data);
         setIsAdopted(data.adoptionAvailability);
       } catch (e) {
-        console.log({ msg: e.message, type: "error" });
+        //console.log({ msg: e.message, type: "error" });
         DisplayModal("Error!", e.message, true);
       }
 
@@ -139,13 +152,20 @@ function AnimalProfile() {
 
       sessionStorage.setItem("user", JSON.stringify(storedUser));
     } catch (e) {
-      console.log({ msg: e.message, type: "error" });
+      //console.log({ msg: e.message, type: "error" });
       DisplayModal("Error!", e.message, true);
     }
   };
 
   return (
     <>
+      <SEO
+        title={`Adopt ${petName} (${petType})`}
+        description={`Meet ${petName}, a sweet ${petType} looking for a loving supporter. Read their personality profile, view photos, and apply to adopt today.`}
+        path={`/AnimalProfile/${animal?.id || ""}`}
+        image={animal?.imageUrl}
+      />
+
       <Modal
         id={modalError ? "modal-error" : undefined}
         show={show}
@@ -189,7 +209,7 @@ function AnimalProfile() {
                   className="p-0"
                   id="animal-profile-image"
                   src={animal.image}
-                  alt={`An image of a dog named ${animal.name}`}
+                  alt={`An image of a ${animal.breed} named ${animal.name}`}
                   onError={(e) => {
                     console.error("Failed to load image:", e.currentTarget.src);
                   }}

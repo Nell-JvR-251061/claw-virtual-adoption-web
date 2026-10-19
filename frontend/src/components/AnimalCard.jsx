@@ -13,7 +13,7 @@ function AnimalCard({ _animal }) {
           <Row className="p-0 m-0">
             <img
               src={_animal.image}
-              alt={`A cute animal with the name: ${_animal.name}`}
+              alt={`A ${_animal.breed} with the name: ${_animal.name}`}
               className="card-img-top p-0"
             ></img>
           </Row>

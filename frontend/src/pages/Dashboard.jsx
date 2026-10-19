@@ -69,7 +69,7 @@ function Dashboard() {
             id="menu-container"
             className="col-2 px-4 pt-4 pb-5 d-flex flex-column justify-content-start align-items-center vh-100"
           >
-            <img id="claw-logo-dashboard" src={clawLogo} className="w-75"></img>
+            <img id="claw-logo-dashboard" src={clawLogo} className="w-75" alt="The Claw Logo."></img>
             <Nav className="flex-column mt-5 gap-3 w-100">
               <Nav.Link
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Dashboard ? "active justify-content-center w-100 mx-auto" : ""}`}
