@@ -12,12 +12,9 @@ export default function SEO({ title, description, path = '', image = 'https://cl
       <meta name="description" content={description} />
       <link rel="canonical" href={fullUrl} />
       <link rel="alternate" hreflang="en-za" href= 'https://www.claw-virtual-adoption.co.za/'/>
+
+      {noIndex ? (<meta name="robots" content="noindex, nofollow" /> ) : (<meta name="robots" content="index, follow"/> )}
       
-      {noIndex && <meta name="robots" content="noindex, nofollow" />}
-
-      <meta name="robots" content="index, follow"/> 
-      <meta name="robots" content="noarchive"/>
-
       <meta property="og:type" content="website" />
       <meta property="og:title" content={`${siteName} | ${title}`} />
       <meta property="og:description" content={description} />
