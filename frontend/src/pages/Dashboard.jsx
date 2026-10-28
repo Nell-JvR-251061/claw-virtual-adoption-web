@@ -31,7 +31,7 @@ function Dashboard() {
     navigate("/");
   };
 
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
+  const API = "https://claw-api-cl.duckdns.org/api";
 
   const [animals, setAnimals] = useState([]);
   const [users, setUsers] = useState([]);

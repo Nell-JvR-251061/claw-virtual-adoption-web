@@ -3,7 +3,7 @@ import { Row, Col, ListGroup, Button, Spinner } from "react-bootstrap";
 import "../../styling/AnimalList.css";
 
 function UserList(_users) {
-  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
+  const API = "https://claw-api-cl.duckdns.org/api";
 
   const DeleteUser = async (userId) => {
     //function to delete selected user
