@@ -71,6 +71,11 @@
   background-color: rgb(from var(--green) r g b / 50%);
 }
 
+.list-user:hover {
+  background-color: rgb(from var(--green) r g b / 50%);
+  cursor: default;
+}
+
 #group-number-text {
   font-family: var(--inter);
   font-weight: 400;

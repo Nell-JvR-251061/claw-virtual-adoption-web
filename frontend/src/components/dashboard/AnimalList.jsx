@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col, ListGroup, Button, Spinner } from "react-bootstrap";
 
 import "../../styling/AnimalList.css";
@@ -13,6 +14,8 @@ function AnimalList({
 }) {
   const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
 
+  const navigate = useNavigate();
+
   const DeleteAnimal = async (animalId) => {
     //function to delete selected dog
     const token = sessionStorage.getItem("token");
@@ -22,14 +25,13 @@ function AnimalList({
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       const data = await response.json();
-      
-      window.location.reload();
 
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting dog:", error);
     }
@@ -86,7 +88,11 @@ function AnimalList({
               as="button"
               className="list-animal"
               key={animal._id ?? index}
-              onClick={() => console.log("Container Ran")}
+              onClick={() =>
+                navigate("/AnimalProfile", {
+                  state: { animalId: animal._id },
+                })
+              }
             >
               <Row className="d-flex align-items-center">
                 <Col>

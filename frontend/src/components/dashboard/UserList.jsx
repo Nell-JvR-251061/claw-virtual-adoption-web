@@ -1,17 +1,16 @@
-import { useState } from "react";
 import { Row, Col, ListGroup, Button, Spinner } from "react-bootstrap";
 
 import "../../styling/AnimalList.css";
 
-function UserList(_users = []) {
+function UserList(_users) {
   const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
 
-  const DeleteAnimal = async (userId) => {
-    //function to delete selected dog
+  const DeleteUser = async (userId) => {
+    //function to delete selected user
     const token = sessionStorage.getItem("token");
 
     try {
-      const response = await fetch(`${API}/dog/delete/${animalId}`, {
+      const response = await fetch(`${API}/auth/delete/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -38,108 +37,61 @@ function UserList(_users = []) {
 
         <ListGroup.Item className="list-headers">
           <Row className="text-center">
-              <Col></Col>
+            <Col>Name</Col>
+            <Col>Surname</Col>
+            <Col>Email</Col>
+            <Col>Joined</Col>
+            <Col>Role</Col>
+            <Col>Action</Col>
           </Row>
         </ListGroup.Item>
 
-        {animalList.length > 0 ? (
-          animalList.map((animal, index) => (
+        {_users?._users?.length > 0 ? (
+          _users._users.map((user, index) => (
             <ListGroup.Item
               as="button"
-              className="list-animal"
-              key={animal._id ?? index}
-              onClick={() => console.log("Container Ran")}
+              className="list-user"
+              key={user._id ?? index}
             >
-              <Row className="d-flex align-items-center">
-                <Col>
-                  <Row className="d-flex align-items-center">
-                    <Col xs="auto">
-                      <img
-                        className="list-images"
-                        src={animal.image}
-                        alt={`An image of a ${animal.breed} named ${animal.name}`}
-                      />
-                    </Col>
+              <Row className="d-flex align-items-center text-start">
+                <Col>{user.name}</Col>
+                <Col>{user.surname}</Col>
+                <Col>{user.email}</Col>
+                <Col className="text-center">
+                  {(() => {
+                    let value = user.createdAt;
 
-                    <Col className="ps-4">
-                      <Row className="animal-name">{animal.name}</Row>
-                      <Row className="animal-breed">{animal.breed}</Row>
-                    </Col>
-                  </Row>
+                    if (
+                      typeof value === "string" &&
+                      value.includes("T") &&
+                      value.endsWith("Z")
+                    ) {
+                      return value.replace("T", " | ").slice(0, 18);
+                    } else if (value !== null && typeof value === "object") {
+                      return JSON.stringify(value);
+                    }
+                    return String(value ?? "");
+                  })()}
                 </Col>
-
-                {_animalInfo.map((info, infoIndex) => {
-                  let value = animal[info];
-
-                  // Fixes ISO timestamps into regular date and time
-                  if (
-                    typeof value === "string" &&
-                    value.includes("T") &&
-                    value.endsWith("Z")
-                  ) {
-                    value = value.replace("T", " | ").slice(0, 18);
-                  } else if (value !== null && typeof value === "object") {
-                    value = JSON.stringify(value);
-                  }
-
-                  return (
-                    <Col key={infoIndex} className="text-center info-text">
-                      {info === "actions" &&
-                      animal.adoptionAvailability != false ? (
-                        <a
-                          className="red-link"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            DeleteAnimal(animal._id);
-                          }}
-                        >
-                          Remove
-                        </a>
-                      ) : (
-                        value
-                      )}
-                    </Col>
-                  );
-                })}
+                <Col className="text-center">{user.role}</Col>
+                <Col className="text-center">
+                  <a
+                    className="red-link"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      DeleteUser(user._id);
+                    }}
+                  >
+                    Remove
+                  </a>
+                </Col>
               </Row>
             </ListGroup.Item>
           ))
         ) : (
           <ListGroup.Item className="text-center">
             <Spinner animation="border" variant="primary" />
-          </ListGroup.Item>
-        )}
-
-        {animalGroups.length > 1 && ( //if more then 8 are received, creates groups
-          <ListGroup.Item>
-            <Row className="align-items-center">
-              <Col>
-                <Button
-                  id="group-back-button"
-                  onClick={previousGroup}
-                  disabled={currentAnimalGroup === 0}
-                >
-                  Back
-                </Button>
-              </Col>
-
-              <Col className="text-center">
-                <span id="group-number-text">
-                  Group {currentAnimalGroup + 1} of {animalGroups.length}
-                </span>
-              </Col>
-
-              <Col className="text-end">
-                <Button
-                  id="group-next-button"
-                  onClick={nextGroup}
-                  disabled={currentAnimalGroup === animalGroups.length - 1}
-                >
-                  Next
-                </Button>
-              </Col>
-            </Row>
           </ListGroup.Item>
         )}
       </ListGroup>
