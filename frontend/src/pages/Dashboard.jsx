@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthManager";
 
@@ -14,6 +14,9 @@ import GearIcon from "../assets/gearIcon.svg?react";
 import ExitIcon from "../assets/exitIcon.svg?react";
 
 import AnimalAddFrom from "../components/Dashboard/AnimalAddForm";
+import DashboardMain from "../components/dashboard/DashboardMain";
+import AnimalList from "../components/dashboard/animalList";
+import UserList from "../components/dashboard/UserList";
 
 import "../styling/Dashboard.css";
 
@@ -27,6 +30,42 @@ function Dashboard() {
     Logout();
     navigate("/");
   };
+
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
+
+  const [animals, setAnimals] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const getAnimals = async () => {
+      try {
+        const response = await fetch(API + "/dog");
+        const data = await response.json();
+
+        //console.log(data);
+
+        setAnimals(data);
+      } catch (error) {
+        console.error("The backend has ran away...", error);
+      }
+    };
+
+    const getUsers = async () => {
+      try {
+        const response = await fetch(API + "/auth");
+        const data = await response.json();
+
+        //console.log(data);
+
+        setUsers(data);
+      } catch (error) {
+        console.error("The backend has ran away...", error);
+      }
+    };
+
+    getAnimals();
+    getUsers();
+  }, []);
 
   const MenuSelect = Object.freeze({
     Dashboard: "Overview",
@@ -46,11 +85,41 @@ function Dashboard() {
     setSelection(externalValue);
   };
 
-  const DashboardComponent = () => <div>Dashboard / Overview Content</div>;
-  const GalleryComponent = () => <div>Animal Gallery Content</div>;
-  const AdoptionComponent = () => <div>New Virtual Adoptions View</div>;
-  const PendingComponent = () => <div>Pending Adoptees Management</div>;
-  const SettingsComponent = () => <div>Settings View</div>;
+  const DashboardComponent = () => <DashboardMain _animals={animals} />;
+  const GalleryComponent = () => (
+    <AnimalList
+      _animals={animals}
+      _animalInfo={["createdAt", "adopter", "updatedAt", "actions"]}
+      _headers={[
+        "Animal Information",
+        "Date Added",
+        "Adopter",
+        "Date Adopted",
+        "Actions",
+      ]}
+    />
+  );
+  const AdoptionComponent = () => (
+    <AnimalList
+      _animals={animals.filter(
+        (animal) => animal.adoptionAvailability === false,
+      )}
+      _animalInfo={["createdAt", "adopter", "updatedAt"]}
+      _headers={["Animal Information", "Date Added", "Adopter", "Date Adopted"]}
+    />
+  );
+  const PendingComponent = () => (
+    <AnimalList
+      _animals={animals.filter(
+        (animal) => animal.adoptionAvailability === true,
+      )}
+      _animalInfo={["createdAt", "actions"]}
+      _headers={["Animal Information", "Date Added", "Actions"]}
+    />
+  );
+  const SettingsComponent = () => <UserList
+      _users={users}
+    />;
 
   const renderView = {
     [MenuSelect.Dashboard]: <DashboardComponent />,
@@ -58,7 +127,11 @@ function Dashboard() {
     [MenuSelect.Adoption]: <AdoptionComponent />,
     [MenuSelect.Pending]: <PendingComponent />,
     [MenuSelect.Settings]: <SettingsComponent />,
-    [MenuSelect.Form]: <AnimalAddFrom onVariableChange={selectionChangeExternal} />,
+    [MenuSelect.Form]: (
+      <AnimalAddFrom
+        onVariableChange={selectionChangeExternal}
+      />
+    ),
   };
 
   return (
@@ -69,9 +142,18 @@ function Dashboard() {
             id="menu-container"
             className="col-2 px-4 pt-4 pb-5 d-flex flex-column justify-content-start align-items-center vh-100"
           >
-            <img id="claw-logo-dashboard" src={clawLogo} className="w-75" alt="The Claw Logo."></img>
+            <img
+              id="claw-logo-dashboard"
+              src={clawLogo}
+              className="w-75"
+              alt="The Claw Logo."
+              onClick={() => {
+                navigate("/");
+              }}
+            ></img>
             <Nav className="flex-column mt-5 gap-3 w-100">
               <Nav.Link
+                as="button"
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Dashboard ? "active justify-content-center w-100 mx-auto" : ""}`}
                 onClick={() => setSelection(MenuSelect.Dashboard)}
               >
@@ -84,6 +166,7 @@ function Dashboard() {
               </Nav.Link>
 
               <Nav.Link
+                as="button"
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Gallery ? "active justify-content-center w-100 mx-auto" : ""}`}
                 onClick={() => setSelection(MenuSelect.Gallery)}
               >
@@ -96,6 +179,7 @@ function Dashboard() {
               </Nav.Link>
 
               <Nav.Link
+                as="button"
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Adoption ? "active justify-content-center w-100 mx-auto" : ""}`}
                 onClick={() => setSelection(MenuSelect.Adoption)}
               >
@@ -108,6 +192,7 @@ function Dashboard() {
               </Nav.Link>
 
               <Nav.Link
+                as="button"
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Pending ? "active justify-content-center w-100 mx-auto" : ""}`}
                 onClick={() => setSelection(MenuSelect.Pending)}
               >
@@ -120,6 +205,7 @@ function Dashboard() {
               </Nav.Link>
 
               <Nav.Link
+                as="button"
                 className={`py-3 d-flex flex-row align-items-center menu-option ${selection === MenuSelect.Settings ? "active justify-content-center w-100 mx-auto" : ""}`}
                 onClick={() => setSelection(MenuSelect.Settings)}
               >
@@ -134,7 +220,8 @@ function Dashboard() {
 
             <Nav className="flex-column mt-auto w-100">
               <Nav.Link
-                id="logout-link"
+                as="button"
+                id="dashboard-logout-link"
                 className="py-3 d-flex flex-row align-items-center menu-option"
                 onClick={LoggingOut}
               >
@@ -150,7 +237,7 @@ function Dashboard() {
 
           <Col
             id="content-container"
-            className="col-10 offset-2 justify-self-start px-5 vh-100"
+            className="col-10 offset-2 justify-self-start px-5"
           >
             <Row id="dashboard-header" className="mt-4 align-items-center">
               <Col>
