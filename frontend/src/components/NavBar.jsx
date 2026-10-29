@@ -20,6 +20,8 @@ function NavBar() {
     navigate("/");
   };
 
+  const animals = user?.animals ?? [];
+
   return (
     <Navbar expand="lg" className="nav-bar">
       <Container>
@@ -122,19 +124,17 @@ function NavBar() {
                   <></>
                 )}
 
-                {user.animals.length > 0 ? (
+                {animals.length > 0 && (
                   <NavDropdown.Item
                     id="nav-link-animals"
                     onClick={() => {
                       navigate("/AnimalProfile", {
-                        state: { animalId: user.animals[0] },
+                        state: { animalId: animals[0] },
                       });
                     }}
                   >
                     Backed Animals
                   </NavDropdown.Item>
-                ) : (
-                  <></>
                 )}
 
                 <NavDropdown.Item id="logout-link" onClick={LoggingOut}>

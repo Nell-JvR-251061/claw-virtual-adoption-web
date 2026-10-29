@@ -143,6 +143,7 @@ function Login() {
           surname: saved.surname,
           email: saved.email,
           id: saved.id,
+          animals: saved.animals ?? []
         },
         saved.token,
       );
