@@ -12,7 +12,7 @@ function AnimalList({
   _linkToText = "View more >",
   _headers = ["Animal Information", "Date Arrived", "Status", "Actions"],
 }) {
-  const API = "https://claw-api-cl.duckdns.org/api";
+  const API = "https://claw-virtual-adoption-web-production.up.railway.app/api";
 
   const navigate = useNavigate();
 
