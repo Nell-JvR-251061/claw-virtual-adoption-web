@@ -2,7 +2,7 @@
 
 ## ~~This repository was used to deploy using Railway and Netlify, linked [here](https://claw-virtual-adoption.co.za).~~ <br>(No longer deployed)
 
-### AWS Deployed Application [link](https://main.d27iq5vkliqz0x.amplifyapp.com).
+### ~~AWS Deployed Application [link](https://main.d27iq5vkliqz0x.amplifyapp.com).~~ (No longer deployed)
 
 ### AWS Repository [link](https://github.com/Nell-JvR-251061/claw-virtual-adoption-web-aws).
 
